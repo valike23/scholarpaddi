@@ -1,0 +1,1 @@
+export const mongoConnection: string = "mongodb+srv://user:Ka1PzKmwhVhjiYhv@cluster0.mpekq.mongodb.net/schoolpaddi?retryWrites=true&w=majority";

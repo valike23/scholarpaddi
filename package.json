@@ -10,11 +10,15 @@
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/mongodb": "^3.6.3",
+    "body-parser": "^1.19.0",
     "compression": "^1.7.1",
     "express-session": "^1.17.1",
+    "mongodb": "^3.6.3",
+    "mysql": "^2.18.1",
     "polka": "next",
     "sirv": "^1.0.0"
-    
   },
   "devDependencies": {
     "@tsconfig/svelte": "^1.0.10",
