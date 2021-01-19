@@ -10,8 +10,10 @@
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",
     "@types/mongodb": "^3.6.3",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
     "express-session": "^1.17.1",
@@ -24,6 +26,7 @@
     "@tsconfig/svelte": "^1.0.10",
     "@types/compression": "^1.7.0",
     "@types/express-session": "^1.17.3",
+    "@types/mysql": "^2.15.17",
     "@types/node": "^14.11.1",
     "@types/polka": "^0.5.1",
     "file-loader": "^6.0.0",
