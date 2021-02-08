@@ -2,12 +2,14 @@
   "bundler": "webpack",
   "shimport": null,
   "assets": {
-    "about": "d24bc9661bde3dd97e86/about.about.js",
-    "blog": "d24bc9661bde3dd97e86/blog.blog.js",
-    "blog_$slug": "d24bc9661bde3dd97e86/blog_$slug.blog_$slug.js",
-    "blog_top": "d24bc9661bde3dd97e86/blog_top.blog_top.js",
-    "index": "d24bc9661bde3dd97e86/index.index.js",
-    "main": "d24bc9661bde3dd97e86/main.js"
+    "about": "4854551401880b837b32/about.about.js",
+    "blog": "4854551401880b837b32/blog.blog.js",
+    "blog_$slug": "4854551401880b837b32/blog_$slug.blog_$slug.js",
+    "blog_top": "4854551401880b837b32/blog_top.blog_top.js",
+    "courses_all": "4854551401880b837b32/courses_all.courses_all.js",
+    "index": "4854551401880b837b32/index.index.js",
+    "main": "4854551401880b837b32/main.js",
+    "signup": "4854551401880b837b32/signup.signup.js"
   },
   "css": {
     "main": null

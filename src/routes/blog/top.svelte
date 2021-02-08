@@ -79,11 +79,12 @@
                     <ul>
                         <li>
                             <i class="flaticon-comments"></i>
-                            <a href="#" class="tran3s">13</a>
+                            <!-- svelte-ignore a11y-missing-attribute -->
+                            <a  class="tran3s">13</a>
                         </li>
                         <li>
                             <i class="flaticon-heart"></i>
-                            <a href="#" class="tran3s">3</a>
+                            <a class="tran3s">3</a>
                         </li>
                     </ul>
                     <h4><a href="blog-details.html" class="tran3s">Build Education Website...</a></h4>

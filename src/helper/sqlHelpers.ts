@@ -38,5 +38,32 @@ export class SqlHelper {
         })
     }
 
+    getAll(table: string) {
+        return new Promise((resolve, reject)=> {
+            this.connection.query(`SELECT * FROM ${table}`, (err: MysqlError
+                , result: any) =>{
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(result);
+
+            });
+        })
+    }
+    defaultQuery(query: string) {
+        return new Promise((resolve, reject)=> {
+            this.connection.query(query, (err: MysqlError
+                , result: any) =>{
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(result);
+
+            });
+        })
+    }
+
     
 }
