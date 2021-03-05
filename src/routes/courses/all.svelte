@@ -1,3 +1,28 @@
+<script context="module" lang="ts">
+    import axios from 'axios';
+    export async function preload( page, session) {
+        let campusData = await this.fetch('api/courses/all?id=1');
+        campusData = await campusData.json();
+
+        return {campusData}
+        
+    }
+    
+  
+</script>
+<script lang="ts">
+import type { Icourse } from '../../Models/course';
+
+     export let  campusData;
+     console.log(campusData);
+     let courses: Array<Icourse> =  campusData;
+     
+     
+</script>
+
+<svelte:head>
+	<title>All Courses</title>
+</svelte:head>
 <div class="inner-banner">
     <div class="opacity">
         <div class="container">
@@ -28,249 +53,40 @@
                    
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/13.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/4.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jemmi Koli</h6>
-                                    <span class="p-bg-color float-right">Free</span>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
+                   {#each courses as course}
+                   <div class="col-lg-4 col-sm-6 col-xs-6">
+                    <div class="single-course">
+                        <div class="image-box"><img height="200" src="{course.course_image}" alt=""></div>
+                        <div class="text">
+                            <div class="image"><img height="200" src="images/course/4.jpg" alt="{course.title}"></div>
+                            <div class="name clearfix">
+                                <h6 class="float-left">Jemmi Koli</h6>
+                                {#if course.is_free}
+                                <span class="p-bg-color float-right">Free</span>
+                                {:else}
+                                <strong class="s-color float-right">${course.price}<sup>.00</sup></strong>
+                                {/if}
+                                
                             </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/14.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/5.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Abdus Salam</h6>
-                                    <strong class="s-color float-right">$79<sup>.99</sup></strong>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/15.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/6.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jhon Doe</h6>
-                                    <span class="p-bg-color float-right">Free</span>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/16.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/4.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jemmi Koli</h6>
-                                    <span class="p-bg-color float-right">Free</span>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/17.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/5.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Abdus Salam</h6>
-                                    <strong class="s-color float-right">$79<sup>.99</sup></strong>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/15.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/6.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jhon Doe</h6>
-                                    <strong class="s-color float-right">$59<sup>.99</sup></strong>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/14.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/4.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jemmi Koli</h6>
-                                    <strong class="s-color float-right">$79<sup>.99</sup></strong>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/17.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/5.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Abdus Salam</h6>
-                                    <strong class="s-color float-right">$79<sup>.99</sup></strong>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
-                    <div class="col-lg-4 col-sm-6 col-xs-6">
-                        <div class="single-course">
-                            <div class="image-box"><img src="images/course/15.jpg" alt=""></div>
-                            <div class="text">
-                                <div class="image"><img src="images/course/6.jpg" alt=""></div>
-                                <div class="name clearfix">
-                                    <h6 class="float-left">Jhon Doe</h6>
-                                    <span class="p-bg-color float-right">Free</span>
-                                </div>
-                                <h5><a href="course-details.html" class="tran3s">Angular 2 Essential Training JavaScript Framework</a></h5>
-                                <ul class="clearfix">
-                                    <li class="float-left">
-                                        <i class="flaticon-people"></i>
-                                        <a  class="tran3s">2,680</a>
-                                    </li>
-                                    <li class="float-left">
-                                        <i class="flaticon-comments"></i>
-                                        <a  class="tran3s">13</a>
-                                    </li>
-                                    <li class="float-right">
-                                        <i class="flaticon-heart"></i>
-                                        <a  class="tran3s">3</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.single-course -->
-                    </div> <!-- /.col- -->
+                            <h5 style="height:120px;overflow-y"><a href="course-details.html" class="tran3s">{course.title}</a></h5>
+                            <ul class="clearfix">
+                                <li class="float-left">
+                                    <i class="flaticon-people"></i>
+                                    <a  class="tran3s">2,680</a>
+                                </li>
+                                <li class="float-left">
+                                    <i class="flaticon-comments"></i>
+                                    <a  class="tran3s">13</a>
+                                </li>
+                                <li class="float-right">
+                                    <i class="flaticon-heart"></i>
+                                    <a  class="tran3s">3</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> <!-- /.single-course -->
+                </div>
+                   {/each}
                 </div> <!-- /.row -->
                 <ul class="theme-pagination clearfix">
                     <li><a  class="tran3s active">1</a></li>
