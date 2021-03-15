@@ -2,6 +2,9 @@
 	import Nav from '../components/Nav.svelte';
 
 	export let segment: string;
+	const handleMessage = () => {
+
+	}
 </script>
 
 <div id="loader-wrapper">
@@ -11,4 +14,4 @@
 <Nav {segment}/>
 
 
-	<slot></slot>
+	<slot ></slot>
