@@ -1,11 +1,17 @@
 
+<script lang="ts">
+import { showNav } from "../stores/nav";
+
+
+showNav.update(n => true );
+</script>
 <svelte:head>
 	<title>ScholarPaddi: Home Page</title>
 </svelte:head>
 <div class="inner-banner">
 	<div class="opacity">
 		<div class="container">
-			<h2>Anguler Javascript</h2>
+			<h2>ScholarPaddi </h2>
 			<ul>
 				<li><a href="index-2.html" class="tran3s">Home</a></li>
 				<li>/</li>

@@ -2,15 +2,17 @@
   "bundler": "webpack",
   "shimport": null,
   "assets": {
-    "about": "27814967ec0f0e81f3b5/about.about.js",
-    "blog": "27814967ec0f0e81f3b5/blog.blog.js",
-    "blog_$slug": "27814967ec0f0e81f3b5/blog_$slug.blog_$slug.js",
-    "blog_top": "27814967ec0f0e81f3b5/blog_top.blog_top.js",
-    "courses_all": "27814967ec0f0e81f3b5/courses_all.courses_all.js",
-    "index": "27814967ec0f0e81f3b5/index.index.js",
-    "main": "27814967ec0f0e81f3b5/main.js",
-    "signup": "27814967ec0f0e81f3b5/signup.signup.js",
-    "vendors~courses_all": "27814967ec0f0e81f3b5/vendors~courses_all.vendors~courses_all.js"
+    "about": "74576205c26b4950aff9/about.about.js",
+    "blog": "74576205c26b4950aff9/blog.blog.js",
+    "blog_$slug": "74576205c26b4950aff9/blog_$slug.blog_$slug.js",
+    "blog_top": "74576205c26b4950aff9/blog_top.blog_top.js",
+    "courses_$slug": "74576205c26b4950aff9/courses_$slug.courses_$slug.js",
+    "courses_all": "74576205c26b4950aff9/courses_all.courses_all.js",
+    "courses_progress": "74576205c26b4950aff9/courses_progress.courses_progress.js",
+    "index": "74576205c26b4950aff9/index.index.js",
+    "main": "74576205c26b4950aff9/main.js",
+    "signup": "74576205c26b4950aff9/signup.signup.js",
+    "vendors~courses_$slug": "74576205c26b4950aff9/vendors~courses_$slug.vendors~courses_$slug.js"
   },
   "css": {
     "main": null

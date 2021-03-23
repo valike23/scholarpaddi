@@ -17,6 +17,12 @@ export interface Icourse {
     discount?: number;
     specification_id?: number;
     is_active?: boolean;
+    what_to_learn?: string| Array<string>;
+    weeks?: Array<Iweek>;
+    author?: string;
+    author_career?: string;
+    author_bio?: string;
+    author_pics?: string;
     
 }
 
@@ -26,3 +32,27 @@ export interface Ispecification {
     description?: string;
     certificate?: string
 }
+ interface Iweek {
+    id?: number;
+    courseId?: number;
+    name?: string;
+    week_order?: string;
+    items?: Array<Iitem>;
+}
+  interface Iitem {
+     id?: number;
+     name?: string;
+     type?: string;
+     content?: string;
+     week_id?: number;
+     preview?: boolean;
+     item_order?: number;
+ }
+ export interface IstudentFeedBack {
+     full_name?: string;
+     ratings?: string;
+     comment?: string;
+     profile_pics?: string;
+     created_date?: Date | string;
+     ratingList?: Array<number>
+ }

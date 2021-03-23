@@ -1,5 +1,4 @@
 <script context="module" lang="ts">
-    import axios from 'axios';
     export async function preload( page, session) {
         let campusData = await this.fetch('api/courses/all?id=1');
         campusData = await campusData.json();
@@ -12,7 +11,8 @@
 </script>
 <script lang="ts">
 import type { Icourse } from '../../Models/course';
-
+import { showNav } from '../../stores/nav';
+showNav.update(n => true );
      export let  campusData;
      console.log(campusData);
      let courses: Array<Icourse> =  campusData;
@@ -68,7 +68,7 @@ import type { Icourse } from '../../Models/course';
                                 {/if}
                                 
                             </div>
-                            <h5 style="height:120px;overflow-y"><a href="course-details.html" class="tran3s">{course.title}</a></h5>
+                            <h5 style="height:120px;overflow-y"><a href="courses/{course.title}&{course.id}" class="tran3s">{course.title}</a></h5>
                             <ul class="clearfix">
                                 <li class="float-left">
                                     <i class="flaticon-people"></i>

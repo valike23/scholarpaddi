@@ -1,3 +1,11 @@
+
+<script lang="ts">
+import { showNav } from "../../stores/nav";
+
+
+showNav.update(n => true );
+</script>
+
 <svelte:head>
 	<title>scholarPaddi: Top News</title>
 </svelte:head>

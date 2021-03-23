@@ -7,7 +7,11 @@
 </script>
 
 <script lang="ts">
+import { showNav } from "../../stores/nav";
+
+
 	export let posts: { slug: string; title: string, html: any }[];
+	showNav.update(n => true );
 </script>
 
 <style>

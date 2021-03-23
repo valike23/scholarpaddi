@@ -9,6 +9,7 @@ export function get (req: Request, res: Http2ServerResponse, next: Next) {
     page = parseInt(page);
     course.getAllCourses(page).then((result: any)=>{
         res.statusCode= 200;
+        
         res.end(JSON.stringify(result))
     }).catch((err: any)=> {
         res.statusCode = 401;
