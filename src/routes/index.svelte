@@ -8,12 +8,16 @@ showNav.update(n => true );
 <svelte:head>
 	<title>ScholarPaddi: Home Page</title>
 </svelte:head>
+	<!-- svelte-ignore a11y-missing-attribute -->
+										
 <div class="inner-banner">
+		<!-- svelte-ignore a11y-missing-attribute -->
+										
 	<div class="opacity">
 		<div class="container">
 			<h2>ScholarPaddi </h2>
 			<ul>
-				<li><a href="index-2.html" class="tran3s">Home</a></li>
+				<li><a href="/" class="tran3s">Home</a></li>
 				<li>/</li>
 				<li>Courses</li>
 			</ul>
@@ -187,7 +191,8 @@ showNav.update(n => true );
 						<h2>Populer Course</h2>
 						<a href="course-grid.html" class="tran3s">See All Course</a>
 					</div> <!-- /.theme-title -->
-
+					<!-- svelte-ignore a11y-missing-attribute -->
+										
 					<div class="row">
 						<div class="col-md-4 col-xs-6 wow fadeInLeft">
 							<div class="single-course">
@@ -203,15 +208,15 @@ showNav.update(n => true );
 									<ul class="clearfix">
 										<li class="float-left">
 											<i class="flaticon-people"></i>
-											<a href="#" class="tran3s">2,680</a>
+											<a  class="tran3s">2,680</a>
 										</li>
 										<li class="float-left">
 											<i class="flaticon-comments"></i>
-											<a href="#" class="tran3s">13</a>
+											<a  class="tran3s">13</a>
 										</li>
 										<li class="float-right">
 											<i class="flaticon-heart"></i>
-											<a href="#" class="tran3s">3</a>
+											<a class="tran3s">3</a>
 										</li>
 									</ul>
 								</div>
@@ -231,15 +236,15 @@ showNav.update(n => true );
 									<ul class="clearfix">
 										<li class="float-left">
 											<i class="flaticon-people"></i>
-											<a href="#" class="tran3s">2,680</a>
+											<a class="tran3s">2,680</a>
 										</li>
 										<li class="float-left">
 											<i class="flaticon-comments"></i>
-											<a href="#" class="tran3s">13</a>
+											<a class="tran3s">13</a>
 										</li>
 										<li class="float-right">
 											<i class="flaticon-heart"></i>
-											<a href="#" class="tran3s">3</a>
+											<a class="tran3s">3</a>
 										</li>
 									</ul>
 								</div>
@@ -259,15 +264,15 @@ showNav.update(n => true );
 									<ul class="clearfix">
 										<li class="float-left">
 											<i class="flaticon-people"></i>
-											<a href="#" class="tran3s">2,680</a>
+											<a class="tran3s">2,680</a>
 										</li>
 										<li class="float-left">
 											<i class="flaticon-comments"></i>
-											<a href="#" class="tran3s">13</a>
+											<a class="tran3s">13</a>
 										</li>
 										<li class="float-right">
 											<i class="flaticon-heart"></i>
-											<a href="#" class="tran3s">3</a>
+											<a class="tran3s">3</a>
 										</li>
 									</ul>
 								</div>
@@ -339,7 +344,8 @@ showNav.update(n => true );
 								<li><del>Offline Access</del></li>
 								<li>Support Teachers</li>
 							</ul>
-							<a href="#" class="tran3s hvr-trim">Buy now </a>
+							<!-- svelte-ignore a11y-missing-attribute -->
+							<a class="tran3s hvr-trim">Buy now </a>
 						</div> <!-- /.single-plan-table -->
 						<div class="single-plan-table tran3s">
 							<h6>Growth</h6>
@@ -352,7 +358,8 @@ showNav.update(n => true );
 								<li>Offline Access</li>
 								<li>Support Teachers</li>
 							</ul>
-							<a href="#" class="tran3s hvr-trim">Buy now </a>
+							<!-- svelte-ignore a11y-missing-attribute -->
+							<a class="tran3s hvr-trim">Buy now </a>
 						</div> <!-- /.single-plan-table -->
 						<div class="single-plan-table tran3s">
 							<h6>Premium</h6>
@@ -365,7 +372,8 @@ showNav.update(n => true );
 								<li>Offline Access</li>
 								<li>Support Teachers</li>
 							</ul>
-							<a href="#" class="tran3s hvr-trim">Buy now </a>
+							<!-- svelte-ignore a11y-missing-attribute -->
+							<a class="tran3s hvr-trim">Buy now </a>
 						</div> <!-- /.single-plan-table -->
 						<div class="single-plan-table tran3s fix">
 							<h6>Enterprise</h6>
@@ -378,7 +386,8 @@ showNav.update(n => true );
 								<li>Offline Access</li>
 								<li>Support Teachers</li>
 							</ul>
-							<a href="#" class="tran3s hvr-trim">Buy now </a>
+							<!-- svelte-ignore a11y-missing-attribute -->
+							<a class="tran3s hvr-trim">Buy now </a>
 						</div> <!-- /.single-plan-table -->
 					</div>
 				</div> <!-- /.container -->
@@ -471,11 +480,8 @@ showNav.update(n => true );
 			</div> <!-- /.testimonial-styleOne -->
 
 
-			<!-- 
-			=============================================
-				Our Blog
-			============================================== 
-			-->
+			<!-- svelte-ignore a11y-missing-attribute -->
+										
 			<div class="our-blog">
 				<div class="container">
 					<div class="theme-title">
@@ -489,11 +495,11 @@ showNav.update(n => true );
 								<ul>
 									<li>
 										<i class="flaticon-comments"></i>
-										<a href="#" class="tran3s">13</a>
+										<a class="tran3s">13</a>
 									</li>
 									<li>
 										<i class="flaticon-heart"></i>
-										<a href="#" class="tran3s">3</a>
+										<a class="tran3s">3</a>
 									</li>
 								</ul>
 								<h4><a href="blog-details.html" class="tran3s">Build Education Website...</a></h4>
@@ -507,11 +513,11 @@ showNav.update(n => true );
 								<ul>
 									<li>
 										<i class="flaticon-comments"></i>
-										<a href="#" class="tran3s">13</a>
+										<a class="tran3s">13</a>
 									</li>
 									<li>
 										<i class="flaticon-heart"></i>
-										<a href="#" class="tran3s">3</a>
+										<a class="tran3s">3</a>
 									</li>
 								</ul>
 								<h4><a href="blog-details.html" class="tran3s">Build Education Website...</a></h4>
@@ -525,11 +531,11 @@ showNav.update(n => true );
 								<ul>
 									<li>
 										<i class="flaticon-comments"></i>
-										<a href="#" class="tran3s">13</a>
+										<a class="tran3s">13</a>
 									</li>
 									<li>
 										<i class="flaticon-heart"></i>
-										<a href="#" class="tran3s">3</a>
+										<a class="tran3s">3</a>
 									</li>
 								</ul>
 								<h4><a href="blog-details.html" class="tran3s">Build Education Website...</a></h4>
