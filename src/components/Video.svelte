@@ -2,7 +2,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
     let isPlayState = false;
-
+    let videoLength = 0;
     let video: HTMLVideoElement;
     export let sources;
     const play = () =>{
@@ -17,6 +17,9 @@ import { onMount } from "svelte";
         video = document.querySelector('video');
         video.src = sources[0].src;
         video.controls = false;
+        video.ontimeupdate = () =>{
+            videoLength = video.currentTime/ video.duration * 100;
+        }
     })
 </script>
 <svelte:head>
@@ -31,7 +34,7 @@ import { onMount } from "svelte";
         
         <div class="controls">
             <div class="orange-bar">
-                <div class="orange-juice">
+                <div style="width: {videoLength}%;" class="orange-juice">
                     
                 </div>
             </div>
@@ -155,7 +158,7 @@ import { onMount } from "svelte";
     }
     .orange-juice {
         height: 10px;
-        width: 200px;
+        
         background-color: orangered
     }
 </style>
