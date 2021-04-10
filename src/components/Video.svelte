@@ -2,9 +2,11 @@
 <script lang="ts">
 import { onMount } from "svelte";
     let isPlayState = false;
-    let videoLength = 0;
+    let videoTimer: HTMLInputElement;
     let video: HTMLVideoElement;
+    let adImage: string;
     export let sources;
+    export let ads;
     const play = () =>{
         video.play();
         isPlayState = true;
@@ -13,13 +15,57 @@ import { onMount } from "svelte";
         video.pause();
         isPlayState = false;
     }
+   
+
+    const updateTimer = () => {
+        video.currentTime = videoTimer.value as unknown as number;
+    }
+    const fastForwards = (time: number = 0) => {
+        video.currentTime += time;
+       
+        console.log('time: ',video.currentTime);
+    }
+    const fastBackwards = (time: number = 0) => {
+        video.currentTime -= time;
+        console.log('time: ',video.currentTime);
+    }
+   
+    
     onMount(()=>{
+        //initialize values
+        videoTimer = document.getElementById('input') as unknown as HTMLInputElement;
         video = document.querySelector('video');
+        videoTimer.value = "0";
         video.src = sources[0].src;
-        video.controls = false;
-        video.ontimeupdate = () =>{
-            videoLength = video.currentTime/ video.duration * 100;
+        videoTimer.min = "0";
+        video.oncanplay = () =>{
+            videoTimer.max = video.duration.toString();
         }
+    
+        
+        
+        video.ontimeupdate = () =>{
+            let time = Math.floor(video.currentTime);
+            videoTimer.value = video.currentTime as unknown as string;
+            ads.forEach(element => {
+                console.log(time, element.time);
+                if(element.time == time){
+                    video.pause();
+                    adImage = element.img;
+                    let ele: HTMLElement = document.getElementsByClassName('ads')[0] as unknown as HTMLElement;
+                    console.log(ele);
+                    let timeOut = setTimeout(()=>{
+                        ele.style.opacity = '0';
+                        video.play();
+                    },7000)
+                    ele.style.opacity = "1";
+                    ads.shift();
+                    return;
+                }
+            });
+        }
+        
+       
     })
 </script>
 <svelte:head>
@@ -28,19 +74,17 @@ import { onMount } from "svelte";
 <div class="my-container">
     <div class="c-video">
         <!-- svelte-ignore a11y-media-has-caption -->
-        <video  class="video">
+        <video  class="video" controls="{false}">
             
         </video>
         
         <div class="controls">
             <div class="orange-bar">
-                <div style="width: {videoLength}%;" class="orange-juice">
-                    
-                </div>
+                <input id="input" on:change="{updateTimer}"  class="orange-juice" type="range">
             </div>
             <div class="buttons">
                 {#if isPlayState}
-                <button on:click="{pause}"><span class="fa fa-pause-circle-o"></span></button>
+                    <button on:click="{pause}"><span class="fa fa-pause-circle-o"></span></button>
                     {:else}
                         <button on:click="{play}"><span class="fa fa-play-circle-o"></span></button>
                 {/if}
@@ -49,22 +93,25 @@ import { onMount } from "svelte";
         </div>
     </div>
     <div class="ads mt-sm-0 mt-n5 ">
-        <div class="w3-display-container w3-green" style="height:100%">
-            <div class="w3-display-topleft w3-red area" >Top Left</div>
-            <div class="w3-display-topright w3-yellow area" >Top Right</div>
-            <div class="w3-display-bottomleft w3-blue area">Bottom Left</div>
-            <div class="w3-display-bottomright w3-purple area">Bottom Right</div>
-            <div class="w3-display-left w3-pink area">Left</div>
-            <div class="w3-display-right area w3-teal">Right</div>
-            <div class="w3-display-middle w3-cyan area text-center pt-3">
+        <div class="ad w3-red" style="background-image: url('{adImage}'); background-size: contain">
+
+        </div>
+        <div class="w3-display-container w3-hide" style="height:100%">
+            <div class="w3-display-topleft  area" ></div>
+            <div class="w3-display-topright area" ></div>
+            <div class="w3-display-bottomleft area"></div>
+            <div class="w3-display-bottomright area"></div>
+            <div class="w3-display-left  area" on:dblclick="{()=>{fastBackwards(20)}}"></div>
+            <div class="w3-display-right area " on:dblclick="{()=>{fastForwards(20)}}"></div>
+            <div class="w3-display-middle area text-center pt-3">
                 {#if isPlayState}
                     <span on:click="{pause}" class="fa fa-pause"></span>
                     {:else}
                     <span on:click="{play}" class="fa fa-play"></span>
                 {/if}
             </div>
-            <div class="w3-display-topmiddle area w3-aqua">Top Mid</div>
-            <div class="w3-display-bottommiddle w3-sand area">Bottom Mid</div>
+            <div class="w3-display-topmiddle area "></div>
+            <div class="w3-display-bottommiddle area"></div>
           </div>
     </div>
 </div>
@@ -77,6 +124,10 @@ import { onMount } from "svelte";
   
     .area span {
         font-size: 10vw;
+    }
+    .ad {
+        height: 100%;
+        width: 100%;
     }
    
     .area {
