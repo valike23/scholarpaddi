@@ -6,6 +6,26 @@ import { showNav } from "../../stores/nav";
 showNav.update(n => false );
 let isOverView: boolean = false;
 let isWeek: boolean = false;
+let isInfo: boolean = false;
+let isForum: boolean = false;
+const navigate = (nav: string) => {
+  if(nav == 'overview'){
+    isOverView = true;
+    isWeek = false;
+  }
+  else if(nav == 'week') {
+    isOverView = false;
+    isWeek = true;
+  }
+  else if(nav == 'info') {
+    isOverView = false;
+    isWeek = false;
+  }
+  else {
+    isOverView = false;
+    isWeek = false;
+  }
+}
 
 
 </script>
@@ -23,6 +43,7 @@ let isWeek: boolean = false;
             mdl-layout--fixed-header">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">ScholarPaddi</span>
       <div class="mdl-layout-spacer"></div>
 
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
@@ -55,15 +76,17 @@ for="demo-menu-lower-right">
     <span class="mdl-layout-title">ScholarPaddi</span>
     <p class="course-title">Neural Network and Deep Learning</p>
      <!-- svelte-ignore a11y-invalid-attribute -->
+      <!-- svelte-ignore a11y-missing-attribute -->
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href=""> <i class="material-icons">dashboard_customize</i> Overview</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">looks_one</i> Week 1</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">looks_two</i> Week 2</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">looks_3</i> Week 3</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">looks_4</i> Week 4</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">forum</i> Discussion Forum</a>
+      <a on:click="{()=>{navigate('overview')}}" class="mdl-navigation__link" > <i class="material-icons">dashboard_customize</i> Overview</a>
+     
+      <a on:click="{()=>{navigate('week')}}" class="mdl-navigation__link" ><i class="material-icons">looks_one</i> Week 1</a>
+      <a on:click="{()=>{navigate('week')}}" class="mdl-navigation__link" ><i class="material-icons">looks_two</i> Week 2</a>
+      <a on:click="{()=>{navigate('week')}}" class="mdl-navigation__link"><i class="material-icons">looks_3</i> Week 3</a>
+      <a on:click="{()=>{navigate('week')}}" class="mdl-navigation__link"><i class="material-icons">looks_4</i> Week 4</a>
+      <a class="mdl-navigation__link" on:click="{()=>{navigate('forum')}}"><i class="material-icons">forum</i> Discussion Forum</a>
 
-      <a class="mdl-navigation__link" href="">Course Info</a>
+      <a on:click="{()=>{navigate('info')}}" class="mdl-navigation__link">Course Info</a>
     </nav>
   </div>
   <main class="mdl-layout__content">
@@ -195,7 +218,7 @@ for="demo-menu-lower-right">
 
         </div>
       </div>
-      {:else}
+      {:else if isInfo}
       <div id="courseInfo">
         <br>
         <h2 class="text-center">Algorithms, Part 1</h2>
@@ -250,7 +273,7 @@ for="demo-menu-lower-right">
           <p class="bold-text">Specification and related courses</p>
           <p>Artificial Intelligence and remote Learning </p>
           <small>complete course series on the world of AI and technology</small>
-          <div class="row mt-4">
+          <div class="row gray mt-4">
             <div class="col-3">
               <div class="course-image"></div>
             </div>
@@ -268,7 +291,7 @@ for="demo-menu-lower-right">
               </p>
             </div>
           </div>
-          <div class="row mt-4">
+          <div class="row gray mt-4">
             <div class="col-3">
               <div class="course-image"></div>
             </div>
@@ -286,7 +309,7 @@ for="demo-menu-lower-right">
               </p>
             </div>
           </div>
-          <div class="row mt-4">
+          <div class="row gray mt-4">
             <div class="col-3">
               <div class="course-image"></div>
             </div>
@@ -304,7 +327,7 @@ for="demo-menu-lower-right">
               </p>
             </div>
           </div>
-          <div class="row mt-4">
+          <div class="row gray mt-4">
             <div class="col-3">
               <div class="course-image"></div>
             </div>
@@ -328,12 +351,180 @@ for="demo-menu-lower-right">
        
 
       </div>
+      {:else}
+      <div id="forum">
+        <br>
+        <h3 class="text-center font-300">Discussion Forum</h3>
+        <p class="text-center">Get help and discuss material with the community.</p>
+        <div class="row p-0" >
+          <div class="col-sm-9  col-12" >
+           <div class="row" >
+             
+              <div class="bold-text ml-sm-3 ml-1 col-3 col-sm-2">Forum</div>
+              <div class="bold-text p-0 col-3 col-sm-2 active">All Threads</div>
+              <div class="col-sm-offset-2 "></div>
+            
+             <div class="col-4 col-sm-4">
+              <input type="text" class="form-control">
+             
+             </div>
+             <span class="material-icons">search</span>
+           
+           </div>
+           <br>
+          <div id="threads">
+            <div class="card">
+              <div class="card-header">
+               <div class="row">
+                 <div class="col-12">
+                   <span class="bold-text">sort by</span>
+                   <select>
+                     <option selected value="0">Latest</option>
+                     <option value="1">Top</option>
+                     <option value="2">Unanswered</option>
+                   </select>
+                   <button  class="float-right button">New Thread</button>
+                 </div>
+               </div>
+              </div>
+              <div class="card-body box">
+                <div class="gray p-2">
+                 <div><strong>General Discussion</strong></div>
+                 <div class="row ">
+                   <div class="col-sm-10 col-8">
+                    <p>General Course Guidlines and F.A.Q</p>
+                    <div class="row">
+                      <div class="col-6 col-sm-3">
+                        <p class='status'>Mentor Created</p>
+                        
+                      </div>
+                      <div class="col-6">
+                        <small>Last post by </small><a >Gerorgi Dervor</a>
+                        
+                      </div>
+                      <div class="col-sm-3 col-6">
+                        <small class="float-left">3 months ago</small>
+                      </div>
+  
+                    </div>
+                   </div>
+                   <div class=" col-sm-1 col-2">
+                     <p class="views">
+                       <strong >4.8k</strong>
+                     </p>
+                     <p class="views">views</p>
+                    
+                   </div>
+ 
+                   <div class="col-sm-1 col-2">
+                     <p class="views">
+                      <strong>4.8k</strong>
+                     </p>
+                       <p class="views">views</p>
+                                      
+                   </div>
+                 </div>
+                </div>
+                
+              </div>
+              <div class="card-body box">
+               <div class="gray p-2">
+                <div><strong>General Discussion</strong></div>
+                <div class="row ">
+                  <div class="col-sm-10 col-8">
+                   <p>General Course Guidlines and F.A.Q</p>
+                   <div class="row">
+                     <div class="col-6 col-sm-3">
+                       <p class='status'>Mentor Created</p>
+                       
+                     </div>
+                     <div class="col-6">
+                       <small>Last post by </small><a >Gerorgi Dervor</a>
+                       
+                     </div>
+                     <div class="col-sm-3 col-6">
+                       <small class="float-left">3 months ago</small>
+                     </div>
+ 
+                   </div>
+                  </div>
+                  <div class=" col-sm-1 col-2">
+                    <p class="views">
+                      <strong >4.8k</strong>
+                    </p>
+                    <p class="views">views</p>
+                   
+                  </div>
+ 
+                  <div class="col-sm-1 col-2">
+                    <p class="views">
+                     <strong>4.8k</strong>
+                    </p>
+                      <p class="views">views</p>
+                                     
+                  </div>
+                </div>
+               </div>
+               
+             </div>
+            </div>
+          </div>
+          </div>
+          <div class="col-sm-3 d-none d-sm-block">
+            <div class="card">
+              <div class="card-body">
+                <p class="bold-text">Description</p>
+                <p>
+                  Welcome to the discussion forums! Ask questions, debate ideas,
+                   and find classmates who share your goals. 
+                  Browse popular threads below or other forums in the sidebar.
+                </p>
+              </div>
+            </div>
+            <br>
+            <div class="card">
+              <div class="card-body">
+                <p class="bold-text">Forum Guidlines</p>
+                <p>
+                  Welcome to the discussion forums! Ask questions, debate ideas,
+                   and find classmates who share your goals. 
+                  Browse popular threads below or other forums in the sidebar.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/if}
     </div>
   </main>
 </div>
 
 <style>
+  .box {
+    margin-bottom: 2px solid black;
+  }
+  .views {
+    font-size: calc(45% + 0.3vw + 0.3vh);
+  }
+  .status {
+    background-color: rgb(201, 189, 30);
+    font-size: calc(50% + 0.3vw + 0.3vh);
+    text-align: center;
+  }
+  .gray:hover {
+    background-color: whitesmoke;
+  }
+  .active {
+    border-bottom: rgb(31, 31, 236) 1px solid;
+  }
+  .button {
+    width: 100px;
+    height: 40px;
+    color:rgb(31, 31, 236);
+    background-color: white;
+    border: solid 1px rgb(31, 31, 236);
+  }
   .course-image {
     background-image: url('images/portfolio/2.jpg');
     max-width: 150px;
