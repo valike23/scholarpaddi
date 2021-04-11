@@ -3,6 +3,14 @@ import { onMount } from "svelte";
     import { showNav } from "../../stores/nav";
     import Video from '../../components/Video.svelte';
     const videoData: any = {
+      ads: [ {
+        img: 'images/event/1.jpg',
+        time:  '100'
+      },
+      {
+        img: 'images/event/2.jpg',
+        time:  '150'
+      }],
       sources: [{src: 'videos/binary_classfication_01.mp4',
                 size: '576'},
                 {src: 'videos/logistic_regression_03.mp4',
