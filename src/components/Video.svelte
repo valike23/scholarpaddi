@@ -54,10 +54,11 @@ import { onMount } from "svelte";
                     adImage = element.img;
                     let ele: HTMLElement = document.getElementsByClassName('ads')[0] as unknown as HTMLElement;
                     console.log(ele);
-                    let timeOut = setTimeout(()=>{
-                        ele.style.opacity = '0';
-                        video.play();
-                    },7000)
+                    // let timeOut = setTimeout(()=>{
+                    //     ele.style.opacity = '0';
+                    //     video.play();
+                    // },10000)
+
                     ele.style.opacity = "1";
                     ads.shift();
                     return;
@@ -92,9 +93,53 @@ import { onMount } from "svelte";
             </div>
         </div>
     </div>
-    <div class="ads mt-sm-0 mt-n5 ">
-        <div class="ad w3-red" style="background-image: url('{adImage}'); background-size: cover">
-            <div class="skip">your video will continue in 10 secs</div>
+    <div class="ads mt-3 mt-sm-0 mt-sm-0 mt-n5 ">
+        <div class=" w3-hide w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
+            <div class="w3-display-bottomright skip ">video contd in 10s</div>
+        </div>
+        <div class="ad">
+            <div class="w3-container">
+                <div class="w3-border w3-gray progress-bar mt-2" style="width:100%; height: 10px">
+                    <div class="w3-blue" style="height:100%;width:40%"></div>
+                  </div>
+                  <div class="question-area mt-3">
+                      <br>
+                      <p style="text-align:center"><strong>Who is the president of Nigeria?</strong></p>
+                      <div class="options">
+                         <div class="row">
+                             <div class="col-6">
+                                 <input name="quiz" type="radio"><span >Buhari</span>
+                             </div>
+                             <div class="col-6">
+                                <input name="quiz" type="radio"><span >Mark</span>
+                            </div>
+                            <div class="col-6">
+                                <input name="quiz" type="radio"><span>Smith</span>
+                            </div>
+                            <div class="col-6">
+                                <input name="quiz" type="radio"><span>Biden</span>
+                            </div>
+                         </div>
+                      </div>
+                      <div>
+                          <br>
+                          <div>
+                            <button class="btn btn-success float-right">submit</button>
+                          </div>
+                          
+                          <div class="w3-card mt-5">
+                             <p class="w3-border w3-border-green p-2">
+                                 <strong>correct!</strong>
+                                 <br>
+                                 <span>
+                                     the current president of Nigeria is buhari he has 
+                                     been president of this nation since 2015.
+                                 </span>
+                             </p>
+                          </div>
+                      </div>
+                  </div>
+            </div>
         </div>
         <div class="w3-display-container w3-hide" style="height:100%">
             <div class="w3-display-topleft  area" ></div>
@@ -122,13 +167,12 @@ import { onMount } from "svelte";
 
 <style>
     .skip {
-        position: fixed;
         background-color: black;
         color: white;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 40%;
+        min-width: 50px;
+        min-height: 30px;
+        height: 60px;
+        width: 140px;
     }
   
     .area span {
@@ -173,9 +217,8 @@ import { onMount } from "svelte";
         overflow: hidden;
         max-height: 400px;
         top: 0;
-        opacity: 0;
-        
         position: absolute;
+        background-color: whitesmoke;
 
     }
     .ads:hover {
