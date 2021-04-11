@@ -93,8 +93,8 @@ import { onMount } from "svelte";
         </div>
     </div>
     <div class="ads mt-sm-0 mt-n5 ">
-        <div class="ad w3-red" style="background-image: url('{adImage}'); background-size: contain">
-
+        <div class="ad w3-red" style="background-image: url('{adImage}'); background-size: cover">
+            <div class="skip">your video will continue in 10 secs</div>
         </div>
         <div class="w3-display-container w3-hide" style="height:100%">
             <div class="w3-display-topleft  area" ></div>
@@ -121,6 +121,15 @@ import { onMount } from "svelte";
 
 
 <style>
+    .skip {
+        position: fixed;
+        background-color: black;
+        color: white;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 40%;
+    }
   
     .area span {
         font-size: 10vw;
