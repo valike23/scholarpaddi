@@ -1,12 +1,73 @@
 
 <script lang="ts">
-import { onMount } from "svelte";
+    import { onMount } from "svelte";
+    import type { Iads, Iquestion, Iquiz, Isource } from "../Models/auxilary";
     let isPlayState = false;
     let videoTimer: HTMLInputElement;
     let video: HTMLVideoElement;
     let adImage: string;
-    export let sources;
-    export let ads;
+    let playContainer: HTMLDivElement;
+    let adsContainer: HTMLDivElement;
+    let quizContainer: HTMLDivElement;
+    let secondContainer: HTMLDivElement;
+    let explanation: HTMLDivElement;
+    let progress: HTMLProgressElement;
+    let isSecDivActive: boolean = false;
+    let showAd: boolean = false;
+    let showQuiz: boolean = false;
+    let currentQuestion: Iquestion = {};
+    let isCorrect: boolean = false;
+    let isAnswered: boolean = false;
+    let currentQuiz: Array<Iquestion> = [];
+    let currentAnswer: string = "";
+
+    export let sources: Array<Isource>;
+    //export let ads: Array<Iads>;
+    export let quizs: Array<Iquiz>;
+    const markQuestion = () => {
+        explanation.style.display = 'block';
+        isAnswered = true;
+        if(currentAnswer == currentQuestion.answer){
+            isCorrect = true;
+        }
+        else {
+            isCorrect = false;
+        }
+    }
+    const gotoNextQuestion = () => {
+        explanation.style.display = 'none';
+        isCorrect = false;
+        isAnswered = false;
+        currentAnswer = "";
+        document.querySelectorAll('input[type="radio"]').forEach((ele: any) =>{
+            ele.checked = false;
+        })
+        if(progress.value == progress.max) {
+            //reset parameters and play video
+            isSecDivActive = false;
+            showQuiz = false;
+            currentQuiz = [];
+            currentQuestion = {};
+            video.play();
+
+        }
+        else {
+            currentQuestion = currentQuiz[progress.value];
+            ++progress.value;
+            console.log(currentQuiz);
+            
+            
+        }
+
+    }
+    const toogleAnswer = (opt: string) => {
+        if(opt == currentAnswer){
+            currentAnswer = ""
+        }
+        else{
+            currentAnswer = opt;
+        }
+    }
     const play = () =>{
         video.play();
         isPlayState = true;
@@ -29,6 +90,7 @@ import { onMount } from "svelte";
         video.currentTime -= time;
         console.log('time: ',video.currentTime);
     }
+    
    
     
     onMount(()=>{
@@ -38,6 +100,16 @@ import { onMount } from "svelte";
         videoTimer.value = "0";
         video.src = sources[0].src;
         videoTimer.min = "0";
+        //initilaze containers
+        explanation = document.querySelector('#explantion') as unknown as HTMLDivElement;
+        playContainer = document.getElementById('playContainer') as unknown as HTMLDivElement;
+        adsContainer = document.getElementById('adsContainer') as unknown as HTMLDivElement;
+        secondContainer = document.getElementById('secondContainer') as unknown as HTMLDivElement;
+        quizContainer = document.getElementById('quizContainer') as unknown as HTMLDivElement;
+        progress = document.querySelector('progress');
+        explanation.style.display = 'none';
+        //playContainer is active.... while adsContainer and quizContainer is inactive
+        //initialize container close
         video.oncanplay = () =>{
             videoTimer.max = video.duration.toString();
         }
@@ -47,23 +119,22 @@ import { onMount } from "svelte";
         video.ontimeupdate = () =>{
             let time = Math.floor(video.currentTime);
             videoTimer.value = video.currentTime as unknown as string;
-            ads.forEach(element => {
-                console.log(time, element.time);
-                if(element.time == time){
+            quizs.forEach(quiz => {
+                console.warn(time, quiz.time);
+                if(quiz.time as unknown as number == time) {
                     video.pause();
-                    adImage = element.img;
-                    let ele: HTMLElement = document.getElementsByClassName('ads')[0] as unknown as HTMLElement;
-                    console.log(ele);
-                    // let timeOut = setTimeout(()=>{
-                    //     ele.style.opacity = '0';
-                    //     video.play();
-                    // },10000)
-
-                    ele.style.opacity = "1";
-                    ads.shift();
-                    return;
+                    isSecDivActive = true;
+                    showQuiz = true;
+                    progress.max = quiz.questions.length;
+                    progress.value = 1;
+                    currentQuestion = quiz.questions[0];
+                    currentQuiz = quiz.questions;
+                    quizs.shift();
+                    
                 }
             });
+           
+            
         }
         
        
@@ -93,47 +164,57 @@ import { onMount } from "svelte";
             </div>
         </div>
     </div>
-    <div class="ads mt-3 mt-sm-0 mt-sm-0 mt-n5 ">
-        <div class=" w3-hide w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
+    <div id="secondContainer" class:active={isSecDivActive} class:inactive={!isSecDivActive} class="ads original-effect mt-3 mt-sm-0 mt-sm-0 mt-n5 ">
+        <div id="adsContainer" class:show="{showAd}" class="adcon w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
             <div class="w3-display-bottomright skip ">video contd in 10s</div>
         </div>
-        <div class="ad">
+        <div class:show={showQuiz}  class="ad" id="quizContainer">
             <div class="w3-container">
-                <div class="w3-border w3-gray progress-bar mt-2" style="width:100%; height: 10px">
-                    <div class="w3-blue" style="height:100%;width:40%"></div>
-                  </div>
-                  <div class="question-area mt-3">
-                      <br>
-                      <p style="text-align:center"><strong>Who is the president of Nigeria?</strong></p>
-                      <div class="options">
-                         <div class="row">
-                             <div class="col-6">
-                                 <input name="quiz" type="radio"><span >Buhari</span>
-                             </div>
-                             <div class="col-6">
-                                <input name="quiz" type="radio"><span >Mark</span>
+                
+                <progress></progress>
+                  
+                <div class="question-area mt-3">
+                    <br>
+                    <p style="text-align:center"><strong>{currentQuestion.quiz}</strong></p>
+                    <div class="options">
+                        <div class="row">
+                            <div class="col-6">
+                                <input on:change="{()=>{toogleAnswer(currentQuestion.option1)}}" name="quiz" type="radio"><span >{currentQuestion.option1}</span>
                             </div>
                             <div class="col-6">
-                                <input name="quiz" type="radio"><span>Smith</span>
+                                <input on:change="{()=>{toogleAnswer(currentQuestion.option2)}}" name="quiz" type="radio"><span >{currentQuestion.option2}</span>
                             </div>
                             <div class="col-6">
-                                <input name="quiz" type="radio"><span>Biden</span>
+                                <input on:change="{()=>{toogleAnswer(currentQuestion.option3)}}" name="quiz" type="radio"><span>{currentQuestion.option3}</span>
+                            </div>
+                            <div class="col-6">
+                                <input on:change="{()=>{toogleAnswer(currentQuestion.option4)}}" name="quiz" type="radio"><span>{currentQuestion.option4}</span>
                             </div>
                          </div>
                       </div>
                       <div>
                           <br>
                           <div>
-                            <button class="btn btn-success float-right">submit</button>
+                              {#if isAnswered}
+                                 <button on:click="{gotoNextQuestion}" class="btn btn-primary float-right">Next</button>
+                                 {:else}
+                                 
+                                 <button on:click="{markQuestion}" class="btn btn-success float-right">submit</button>
+                              {/if}
                           </div>
                           
-                          <div class="w3-card mt-5">
-                             <p class="w3-border w3-border-green p-2">
-                                 <strong>correct!</strong>
+                          <div id='explantion' class="w3-card mt-5">
+                             <p class:w3-border-green={isCorrect} class:w3-border-red={!isCorrect} class="w3-border w3-border-green p-2">
+                                 <strong>
+                                     {#if isCorrect}
+                                        correct!!!
+                                        {:else}
+                                        incorrect!!!
+                                    {/if}
+                                </strong>
                                  <br>
                                  <span>
-                                     the current president of Nigeria is buhari he has 
-                                     been president of this nation since 2015.
+                                     {currentQuestion.explantion}
                                  </span>
                              </p>
                           </div>
@@ -141,7 +222,7 @@ import { onMount } from "svelte";
                   </div>
             </div>
         </div>
-        <div class="w3-display-container w3-hide" style="height:100%">
+        <div id="playContainer" class="w3-display-container" style="height:100%">
             <div class="w3-display-topleft  area" ></div>
             <div class="w3-display-topright area" ></div>
             <div class="w3-display-bottomleft area"></div>
@@ -166,6 +247,12 @@ import { onMount } from "svelte";
 
 
 <style>
+    progress{
+        width: 100%;
+    }
+    .adcon {
+        display: none
+    }
     .skip {
         background-color: black;
         color: white;
@@ -181,6 +268,10 @@ import { onMount } from "svelte";
     .ad {
         height: 100%;
         width: 100%;
+        display: none;
+    }
+    .show {
+        display: block
     }
    
     .area {
@@ -207,11 +298,11 @@ import { onMount } from "svelte";
     .c-video:hover .controls {
         transform: translateY(0);
     }
-    .ads{
+    .original-effect{
         width: 100%;
         max-width: 800px;
         height: 100%;
-        opacity: 0;
+       
         align-items: center;
         justify-content: center;
         overflow: hidden;
@@ -221,7 +312,13 @@ import { onMount } from "svelte";
         background-color: whitesmoke;
 
     }
-    .ads:hover {
+    .active {
+        opacity: 1;
+    }
+    .inactive {
+        opacity: 0;
+    }
+    .inactive:hover {
         opacity: 0.7;
     }
     .controls {
@@ -262,6 +359,6 @@ import { onMount } from "svelte";
     .orange-juice {
         height: 10px;
         
-        background-color: orangered
+        color: orangered
     }
 </style>

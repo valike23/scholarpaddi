@@ -1,8 +1,69 @@
 <script lang="ts">
-import { onMount } from "svelte";
+    import { onMount } from "svelte";
     import { showNav } from "../../stores/nav";
     import Video from '../../components/Video.svelte';
-    const videoData: any = {
+    import type { Ivideo } from "../../Models/auxilary";
+    const videoData: Ivideo = {
+      quizs: [
+        {
+          time: '120',
+          questions: [
+            {
+              quiz: "who is the president of Nigeria?",
+              option1: "Buhari",
+              option2: "Mark",
+              option3: "Smith",
+              option4: "Lorde",
+              answer: "Buhari",
+              explantion: "Buhari was elected president by the majority of " + 
+              " miscrenants in the country this  was to ensure the majority of"+
+              " the country remain in perpertual poverty while a minority enjoy" +
+              " the so called dividence of democracy."
+            },
+            {
+              quiz: "who is the president of USA?",
+              option1: "Buhari",
+              option2: "Mark",
+              option3: "Biden",
+              option4: "Lorde",
+              answer: "Biden",
+              explantion: "Joseph Biden also known as sleepy joe is the 46th president" + 
+              " of the United States he had made laws that would destroy his country"+
+              " almost like he is sick and dying and what the hell... his reach could" +
+              " end up destroying the world."
+            }
+          ]
+        },
+        {
+          time: '129',
+          questions: [
+            {
+              quiz: "who is the president of Nigeria?",
+              option1: "Buhari",
+              option2: "Mark",
+              option3: "Smith",
+              option4: "Lorde",
+              answer: "Buhari",
+              explantion: "Buhari was elected president by the majority of " + 
+              " miscrenants in the country this  was to ensure the majority of"+
+              " the country remain in perpertual poverty while a minority enjoy" +
+              " the so called dividence of democracy."
+            },
+            {
+              quiz: "who is the president of USA?",
+              option1: "Buhari",
+              option2: "Mark",
+              option3: "Biden",
+              option4: "Lorde",
+              answer: "Biden",
+              explantion: "Joseph Biden also known as sleepy joe is the 46th president" + 
+              " of the United States he had made laws that would destroy his country"+
+              " almost like he is sick and dying and what the hell... his reach could" +
+              " end up destroying the world."
+            }
+          ]
+        }
+      ],
       ads: [ {
         img: 'images/event/1.jpg',
         time:  '100'

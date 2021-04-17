@@ -2,18 +2,18 @@
   "bundler": "webpack",
   "shimport": null,
   "assets": {
-    "about": "b0bb5090fbabb535f395/about.about.js",
-    "blog": "b0bb5090fbabb535f395/blog.blog.js",
-    "blog_$slug": "b0bb5090fbabb535f395/blog_$slug.blog_$slug.js",
-    "blog_top": "b0bb5090fbabb535f395/blog_top.blog_top.js",
-    "courses_$slug": "b0bb5090fbabb535f395/courses_$slug.courses_$slug.js",
-    "courses_all": "b0bb5090fbabb535f395/courses_all.courses_all.js",
-    "courses_content": "b0bb5090fbabb535f395/courses_content.courses_content.js",
-    "courses_progress": "b0bb5090fbabb535f395/courses_progress.courses_progress.js",
-    "index": "b0bb5090fbabb535f395/index.index.js",
-    "main": "b0bb5090fbabb535f395/main.js",
-    "signup": "b0bb5090fbabb535f395/signup.signup.js",
-    "vendors~courses_$slug": "b0bb5090fbabb535f395/vendors~courses_$slug.vendors~courses_$slug.js"
+    "about": "f9978fe01b5087ada60f/about.about.js",
+    "blog": "f9978fe01b5087ada60f/blog.blog.js",
+    "blog_$slug": "f9978fe01b5087ada60f/blog_$slug.blog_$slug.js",
+    "blog_top": "f9978fe01b5087ada60f/blog_top.blog_top.js",
+    "courses_$slug": "f9978fe01b5087ada60f/courses_$slug.courses_$slug.js",
+    "courses_all": "f9978fe01b5087ada60f/courses_all.courses_all.js",
+    "courses_content": "f9978fe01b5087ada60f/courses_content.courses_content.js",
+    "courses_progress": "f9978fe01b5087ada60f/courses_progress.courses_progress.js",
+    "index": "f9978fe01b5087ada60f/index.index.js",
+    "main": "f9978fe01b5087ada60f/main.js",
+    "signup": "f9978fe01b5087ada60f/signup.signup.js",
+    "vendors~courses_$slug": "f9978fe01b5087ada60f/vendors~courses_$slug.vendors~courses_$slug.js"
   },
   "css": {
     "main": null
