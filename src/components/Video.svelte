@@ -191,7 +191,6 @@
     </div>
     <div id="secondContainer" class:active={isSecDivActive} class:inactive={!isSecDivActive} class="ads original-effect mt-3 mt-sm-0 mt-sm-0 mt-n5 ">
         <div  class:show="{showAd}" class="ad w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
-           <p>more content to know why this ad is not showing up</p>
             <div class="w3-display-bottomright skip ">video contd in {adDuration}</div>
         </div>
         <div class:show={showQuiz}  class="ad" id="quizContainer">
