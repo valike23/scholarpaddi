@@ -20,9 +20,10 @@
     let isAnswered: boolean = false;
     let currentQuiz: Array<Iquestion> = [];
     let currentAnswer: string = "";
+    let adDuration: number = 0;
 
     export let sources: Array<Isource>;
-    //export let ads: Array<Iads>;
+    export let ads: Array<Iads>;
     export let quizs: Array<Iquiz>;
     const markQuestion = () => {
         explanation.style.display = 'block';
@@ -133,6 +134,30 @@
                     
                 }
             });
+            ads.forEach(ad => {
+                console.warn(time, ad.time);
+                if(ad.time as unknown as number == time) {
+                    adImage = ad.img;
+                    video.pause();
+                    isSecDivActive = true;
+                    showAd = true;
+                    adDuration = 10;
+                    let  interval = setInterval(()=>{
+                        --adDuration;
+                        if(adDuration <= 0) {
+                            console.log('monitoring set time interval');
+                            isSecDivActive = false;
+                            showAd = false;
+                            adDuration = 0;
+                            clearInterval(interval);
+                            video.play();
+                            
+                        }
+                    }, 1000)
+                    ads.shift();
+                    
+                }
+            });
            
             
         }
@@ -165,8 +190,9 @@
         </div>
     </div>
     <div id="secondContainer" class:active={isSecDivActive} class:inactive={!isSecDivActive} class="ads original-effect mt-3 mt-sm-0 mt-sm-0 mt-n5 ">
-        <div id="adsContainer" class:show="{showAd}" class="adcon w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
-            <div class="w3-display-bottomright skip ">video contd in 10s</div>
+        <div  class:show="{showAd}" class="ad w3-display-container w3-red" style="background-image: url('{adImage}'); background-size: cover">
+           <p>more content to know why this ad is not showing up</p>
+            <div class="w3-display-bottomright skip ">video contd in {adDuration}</div>
         </div>
         <div class:show={showQuiz}  class="ad" id="quizContainer">
             <div class="w3-container">
@@ -250,9 +276,7 @@
     progress{
         width: 100%;
     }
-    .adcon {
-        display: none
-    }
+    
     .skip {
         background-color: black;
         color: white;
@@ -271,7 +295,7 @@
         display: none;
     }
     .show {
-        display: block
+        display: block !important
     }
    
     .area {
