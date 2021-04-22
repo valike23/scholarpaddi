@@ -128,6 +128,7 @@
         quizContainer = document.getElementById('quizContainer') as unknown as HTMLDivElement;
         progress = document.querySelector('progress');
         secondContainer.style.height = video.clientHeight as unknown as string;
+        quizContainer.style.overflowY = "scroll";
 
         explanation.style.display = 'none';
         
@@ -278,6 +279,7 @@
                 <div class="w3-display-bottommiddle area"></div>
               </div>
         </div>
+        <br><br><br>
         <div class="controls">
             <div class="orange-bar">
                 <input id="input" on:change="{updateTimer}"  class="orange-juice" type="range">
@@ -308,7 +310,7 @@
 
 
 <div id="template" style="display: none;">
-    <div class="p-2">
+    <div style="opacity:1" class="p-2">
         {#each sources as src}
             <div class="pb-2">{src.size} <span class="fa fa-check float-right"></span></div>
         {/each}
@@ -316,7 +318,7 @@
     
 </div>
 <div id="caption" style="display: none;">
-    <div class="p-2">
+    <div class="p-2" style="opacity:unset">
         <div class="pb-2">none <span class="fa fa-check float-right"></span></div>
         {#each tracks as track}
             <div class="pb-2">{track.label} <span class="fa fa-check float-right"></span></div>
@@ -397,7 +399,7 @@
         display: flex;
         position: absolute;
         bottom: 0;
-        opacity: 0.85;
+        opacity: 0.79;
         width: 100%;
         flex-wrap: wrap;
         background: rgba(0,0,0.7);
