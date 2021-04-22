@@ -22,7 +22,8 @@
     "mysql": "^2.18.1",
     "polka": "next",
     "sirv": "^1.0.0",
-    "sveltestrap": "^3.13.0"
+    "sveltestrap": "^3.13.0",
+    "tippy.js": "^6.3.1"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^1.0.10",
