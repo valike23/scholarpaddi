@@ -65,11 +65,6 @@ showNav.update(n => true );
 </div> <!-- /.inner-banner -->
 
 
-<!-- 
-=============================================
-    Course Details
-============================================== 
--->
 <div class="course-details">
     <div class="container">
         <div class="row">
@@ -278,7 +273,8 @@ showNav.update(n => true );
                             <ul class="clearfix student-image">
                               {#each feeds as feed}
                               <li><img src="{feed.profile_pics}" alt=""></li>
-                              {/each}
+                                 <!-- svelte-ignore a11y-invalid-attribute -->
+                         {/each}
                               {#if feedBack[4]}
                               <li>
                                 <div class="image">
@@ -291,7 +287,7 @@ showNav.update(n => true );
                             </ul>
                             <p><b>{feedBack.length}</b> Students Enroolled</p>
                         </div>
-                        <a href="#" class="tran3s s-bg-color take-course hvr-trim">Take this course</a>
+                        <a href="courses/progress" class="tran3s s-bg-color take-course hvr-trim">Take this course</a>
                     </div> <!-- /.sidebar-course-information -->
 
                     <div class="sidebar-instructor-info">

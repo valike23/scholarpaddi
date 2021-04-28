@@ -360,7 +360,7 @@
     }
     .my-container {
         display: flex;
-        background: #ccc;
+        background: white;
         justify-content: center;
         align-items: center;
     }
@@ -369,18 +369,16 @@
     }
     .c-video {
         width: 100%;
-        max-width: 800px;
         position: relative;
     }
    
     .original-effect{
         width: 100%;
-        max-width: 800px;
         height: 100%;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        max-height: 400px;
+        max-height: 500px;
         top: 0;
         position: absolute;
         background-color: whitesmoke;

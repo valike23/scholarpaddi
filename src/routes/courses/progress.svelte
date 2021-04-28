@@ -1,6 +1,8 @@
 
 <script lang="ts">
 import { showNav } from "../../stores/nav";
+let isNightMood = true;
+let isDayMood = false;
 
 
 showNav.update(n => false );
@@ -40,8 +42,8 @@ const navigate = (nav: string) => {
 </svelte:head>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-            mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
+            mdl-layout--fixed-header ">
+  <header class="mdl-layout__header dark-primary-color">
     <div class="mdl-layout__header-row">
       <span class="mdl-layout-title">ScholarPaddi</span>
       <div class="mdl-layout-spacer"></div>
@@ -72,7 +74,7 @@ for="demo-menu-lower-right">
 
     </div>
   </header>
-  <div class="mdl-layout__drawer">
+  <div class="mdl-layout__drawer default-primary-color">
     <span class="mdl-layout-title">ScholarPaddi</span>
     <p class="course-title">Neural Network and Deep Learning</p>
      <!-- svelte-ignore a11y-invalid-attribute -->
@@ -383,7 +385,7 @@ for="demo-menu-lower-right">
                      <option value="1">Top</option>
                      <option value="2">Unanswered</option>
                    </select>
-                   <button  class="float-right button">New Thread</button>
+                   <button  class="float-right button accent-color">New Thread</button>
                  </div>
                </div>
               </div>
@@ -501,6 +503,18 @@ for="demo-menu-lower-right">
 </div>
 
 <style>
+
+.dark-primary-color    { background: #0C0545; }
+.default-primary-color { background: white; }
+.text-primary-color    { color: #FFFFFF; }
+.accent-color { 
+  background: #D3202A;
+  color: white
+}
+.accent-color:hover {
+  background: #D3202A;
+  color: white
+}
   .box {
     margin-bottom: 2px solid black;
   }
@@ -521,9 +535,6 @@ for="demo-menu-lower-right">
   .button {
     width: 100px;
     height: 40px;
-    color:rgb(31, 31, 236);
-    background-color: white;
-    border: solid 1px rgb(31, 31, 236);
   }
   .course-image {
     background-image: url('images/portfolio/2.jpg');
@@ -540,8 +551,6 @@ for="demo-menu-lower-right">
   }
   table {
     width: 100%;
-    
-  
   }
   .table-wrap {
     text-overflow: clip;
@@ -607,8 +616,6 @@ for="demo-menu-lower-right">
 .long-card {
       width: 96%;
       margin-top: 10px;
-
-
     }
 
   .title {
