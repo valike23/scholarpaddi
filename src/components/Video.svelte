@@ -97,6 +97,7 @@
    
     
     onMount(()=>{
+        console.log(window);
         //initialize values
         videoTimer = document.getElementById('input') as unknown as HTMLInputElement;
         video = document.querySelector('video');
@@ -106,21 +107,21 @@
         myWindow = window;
         let template: string = document.getElementById('template').innerHTML;
         let caption: string = document.getElementById('caption').innerHTML;
-        myWindow.tippy('#gear', {
-            content: template,
-            allowHTML: true,
-            delay: [300, 100],
-            interactive: true,
-            trigger: 'click',
-            zIndex: 900000000
-        });
-        myWindow.tippy('#cap', {
-            content: caption,
-            allowHTML: true,
-            delay: [300, 100],
-            interactive: true,
-            trigger: 'click',
-        });
+        // myWindow.tippy('#gear', {
+        //     content: template,
+        //     allowHTML: true,
+        //     delay: [300, 100],
+        //     interactive: true,
+        //     trigger: 'click',
+        //     zIndex: 900000000
+        // });
+        // myWindow.tippy('#cap', {
+        //     content: caption,
+        //     allowHTML: true,
+        //     delay: [300, 100],
+        //     interactive: true,
+        //     trigger: 'click',
+        // });
         explanation = document.querySelector('#explantion') as unknown as HTMLDivElement;
         playContainer = document.getElementById('playContainer') as unknown as HTMLDivElement;
         adsContainer = document.getElementById('adsContainer') as unknown as HTMLDivElement;
@@ -193,8 +194,8 @@
 <svelte:head>
     <link rel="stylesheet" href="css/w3.css">
     <link rel="stylesheet" href="toast/toast.css">
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer src="https://unpkg.com/tippy.js@6"></script>
     <script src="toast/toast.js" defer></script>
 </svelte:head>
 <div class="my-container">

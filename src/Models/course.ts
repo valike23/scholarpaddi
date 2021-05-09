@@ -32,14 +32,15 @@ export interface Ispecification {
     description?: string;
     certificate?: string
 }
- interface Iweek {
+ export interface Iweek {
     id?: number;
     courseId?: number;
     name?: string;
     week_order?: string;
     items?: Array<Iitem>;
+    objectives?: string;
 }
-  interface Iitem {
+ export interface Iitem {
      id?: number;
      name?: string;
      type?: string;
@@ -47,6 +48,7 @@ export interface Ispecification {
      week_id?: number;
      preview?: boolean;
      item_order?: number;
+     active?: boolean;
  }
  export interface IstudentFeedBack {
      full_name?: string;

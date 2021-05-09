@@ -3,6 +3,7 @@ import { mongoConnection } from '../Models/common';
 import { MongoClient, MongoError, ObjectID } from 'mongodb';
 import type { Iblog } from '../Models/blog';
 
+
 export class BlogController {
     name: string;
     collection: string;

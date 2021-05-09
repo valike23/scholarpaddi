@@ -1,5 +1,18 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
+	let user: any = {};
+	let stage = false;
 	
+	onMount(()=>{
+		user = JSON.parse( sessionStorage.getItem('user'));
+		if(user == null) {
+			stage = false;
+		}
+		else {
+			stage = true;
+		}
+	})
 </script>
 
 			<!-- 
@@ -45,7 +58,8 @@
 											<li><a href="pricing-plan.html">Angular</a></li>
 											<li><a href="faq.html">Shoe Making</a></li>
 											<li><a href="404.html">Tailorings</a></li>
-											<li><a href="sign-up.html">Registration</a></li>
+											<li><a href="courses/all">All Courses</a></li>
+											<!-- svelte-ignore a11y-invalid-attribute -->
 											<li class="dropdown-holder"><a href="#">Third Level menu</a>
 												<ul class="second-sub-menu">
 													<li><a href="#">menu one</a></li>
@@ -72,7 +86,22 @@
 										</ul>
 									</li>
 									<li><a href="/signup" class="tran3s">Tools</a></li>
-									<li class="login"><button class="tran3s" data-toggle="modal" data-target=".signInModal"><i class="flaticon-lock"></i> Login</button></li>
+									<li class="login">
+										{#if !stage}
+										<button  class="tran3s">
+											<i class="flaticon-lock"></i><a style="text-decoration: none; color: white" href="/login">Login</a> 
+										</button>
+										{:else}
+										<button  class="tran3s">
+											<!-- svelte-ignore a11y-missing-attribute -->
+											<i class="flaticon-lock"></i>
+
+											<!-- svelte-ignore a11y-missing-attribute -->
+											<a style="text-decoration: none; color: white" >Logout</a> 
+										</button>
+										{/if}
+										
+									</li>
 								</ul>
 						   </div><!-- /.navbar-collapse -->
 						</nav> <!-- /.theme-main-menu -->

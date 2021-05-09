@@ -1,6 +1,8 @@
 import { createConnection, MysqlError } from 'mysql';
 import type { ConnectionConfig, Connection } from 'mysql';
-
+export interface Iquery {
+    where?: any
+}
 export class SqlHelper {
     
     connection: Connection;
@@ -23,7 +25,13 @@ export class SqlHelper {
         })
     }
 
+private generateGT (col, value): string {
+    return ` ${col} > '${value}'`;
+}
 
+private generateLT (col, value): string {
+    return ` ${col} < '${value}'`;
+}
     insertQuery(table: string, data: any) {
         return new Promise((resolve, reject)=> {
             this.connection.query(`INSERT INTO ${table} set ?`, data,(err: MysqlError
@@ -62,6 +70,26 @@ export class SqlHelper {
                     resolve(result);
 
             });
+        })
+    }
+    findOne(table: string, query:any) {
+        return new Promise((resolve, reject) => {
+            let sql = `select `;
+            var keys = Object.keys(query);
+            if(keys.length == 0) {
+
+            }
+            else {
+                keys.forEach((e, i)=>{
+                    if(e == '$where'){
+    
+                    }
+                })
+            }
+            
+            this.connection.query(sql, (err: MysqlError, result: any)=> {
+
+            })
         })
     }
 

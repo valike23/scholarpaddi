@@ -4,7 +4,8 @@ export interface Ivideo {
     ads?: Array<Iads>;
     poster?: string;
     sources?: Array<Isource>;
-    tracks?: Array<Itrack>
+    tracks?: Array<Itrack>;
+    duration?: number;
 }
 
 export interface Iquiz {

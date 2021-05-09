@@ -1,11 +1,76 @@
 import  {SqlHelper} from '../helper/sqlHelpers';
-import { localSql } from '../Models/common';
+import { localSql, mongoConnection } from '../Models/common';
+import { MongoClient, MongoError, ObjectID } from 'mongodb';
+import type { Iads, Ivideo } from '../Models/auxilary';
 
 const sqlHelper = new SqlHelper(localSql);
 
 export class CourseController {
+    name: string;
+    collection: string;
+    client: MongoClient;
     constructor() {
+        this.name = 'schoolpaddi';
+        this.collection = 'blog';
+        this.connect().then((res)=> {
+            this.client = res;
+
+        },(err)=> {
+            console.log(err);
+        })
+    }
+    private connect(): Promise<MongoClient> {
         
+        return new Promise((resolve, reject)=> {
+            MongoClient.connect(mongoConnection).then((client:MongoClient) =>{
+                resolve(client);
+            },(error: MongoError)=>{
+                reject(error);
+            })
+        })
+    }
+    getVideo (videoId: number){
+        function isUnique(time: number, ads: Array<Iads>) {
+            let answer = true;
+            ads.forEach((e,i)=> {
+                if(e.time as unknown as number == time) {
+                    answer = false;
+                }
+            })
+            return answer;
+        }
+        function generateRandomTime(duration,ads: Array<Iads>) {
+            const dur = Math.floor(Math.random() * duration);
+            if(isUnique(dur, ads)) return dur;
+            generateRandomTime(duration, ads);
+
+        }
+        return new Promise ((resolve, reject) =>{
+            this.connect().then((client: MongoClient)=> {
+                    console.log(videoId);
+                    client.db('schoolpaddi').collection('videos').findOne({id: Number(videoId)}).then((result: Ivideo)=>{
+                        console.log(result);
+                        const duration = result.duration;
+                        console.log(duration);
+                        result.ads = [];
+                        const length = Math.floor(duration/100);
+                        for (let index = 0; index < length; index++) {
+                            result.ads[index] = {};
+                            result.ads[index].time = generateRandomTime(duration, result.ads) as unknown as string;
+                        }
+                        client.db('schoolpaddi').collection('ads').aggregate([{$sample: {size: length}}]).toArray().then((resd)=>{
+                            resd.forEach((e, i)=> {
+                                result.ads[i].img = e.src;
+                            })
+                            resolve(result);
+                        })  
+                    }, (err)=>{
+                        console.log(err);
+                        reject(err);
+                    })
+                })
+           
+        })
     }
 
     getAllCourses(page: number) {

@@ -1,111 +1,103 @@
+<script context="module" lang="ts">
+  export async function preload(page, session) {
+    let id = page.query.courseId;
+
+    console.log(id);
+    let campusData = await this.fetch("api/courses/course?id=" + id);
+    campusData = await campusData.json();
+ 
+    return { campusData };
+  }
+</script>
 <script lang="ts">
+    import axios from 'axios';
     import { onMount } from "svelte";
     import { showNav } from "../../stores/nav";
     import Video from '../../components/Video.svelte';
     import type { Ivideo } from "../../Models/auxilary";
+    import type { Icourse, Iitem } from "../../Models/course";
     let isVideo = false;
+    let loading = false;
     let isText = false;
     let isQuiz = false;
+    let loader = false;
     let isResources = false;
+    let isNightMood = true;
+    let isDayMood = false;
+    let activeItem: Iitem = {};
+    export let campusData;
+    let course: Icourse = campusData[0];
+    let activeWeek = course.weeks[0];
     let preQuiz = true;
-    const videoData: Ivideo = 
-    {
-      quizs: [
-        {
-          time: '120',
-          questions: [
-            {
-              quiz: "who is the president of Nigeria?",
-              option1: "Buhari",
-              option2: "Mark",
-              option3: "Smith",
-              option4: "Lorde",
-              answer: "Buhari",
-              explantion: "Buhari was elected president by the majority of " + 
-              " miscrenants in the country this  was to ensure the majority of"+
-              " the country remain in perpertual poverty while a minority enjoy" +
-              " the so called dividence of democracy."
-            },
-            {
-              quiz: "who is the president of USA?",
-              option1: "Buhari",
-              option2: "Mark",
-              option3: "Biden",
-              option4: "Lorde",
-              answer: "Biden",
-              explantion: "Joseph Biden also known as sleepy joe is the 46th president" + 
-              " of the United States he had made laws that would destroy his country"+
-              " almost like he is sick and dying and what the hell... his reach could" +
-              " end up destroying the world."
-            }
-          ]
-        },
-        {
-          time: '129',
-          questions: [
-            {
-              quiz: "who is the president of Nigeria?",
-              option1: "Buhari",
-              option2: "Mark",
-              option3: "Smith",
-              option4: "Lorde",
-              answer: "Buhari",
-              explantion: "Buhari was elected president by the majority of " + 
-              " miscrenants in the country this  was to ensure the majority of"+
-              " the country remain in perpertual poverty while a minority enjoy" +
-              " the so called dividence of democracy."
-            },
-            {
-              quiz: "who is the president of USA?",
-              option1: "Buhari",
-              option2: "Mark",
-              option3: "Biden",
-              option4: "Lorde",
-              answer: "Biden",
-              explantion: "Joseph Biden also known as sleepy joe is the 46th president" + 
-              " of the United States he had made laws that would destroy his country"+
-              " almost like he is sick and dying and what the hell... his reach could" +
-              " end up destroying the world."
-            }
-          ]
-        }
-      ],
-      ads: [ {
-        img: 'images/event/1.jpg',
-        time:  '100'
-      },
-      {
-        img: 'images/event/2.jpg',
-        time:  '150'
-      }],
-      sources: [{src: 'videos/binary_classfication_01.mp4',
-                size: '576'},
-                {src: 'videos/logistic_regression_03.mp4',
-                size: '720'},
-                {src: 'videos/logistic_regression_02.mp4',
-                size: '1080'}],
-      poster: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg',
-      tracks: [{
-        kind: 'captions',
-        label: 'English',
-        srcLang: 'en',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt',
-        isDefault: true
-      },
-      {
-        kind: 'captions',
-        label: 'French',
-        srcLang: 'fr',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt',
-        isDefault: false
-      }]
+    let videoData: Ivideo = {};
+    const enterQuiz = (item: Iitem) => {
+      activeItem = item;
+      isVideo = false;
+      loading = false;
+      isText = false;
+      isQuiz = true;
+      loader = false;
+      preQuiz = false;
+
     }
-    
+   
+    const navigate = (item: Iitem)=> {
+      activeItem = item;
+      activeWeek.items.forEach((e, i)=>{
+        if(e.id == item.id) {
+          activeWeek.items[i].active = true;
+        }
+        else {
+          activeWeek.items[i].active = false;
+        }
+      })
+      if(activeItem.type == "video") {
+        
+        loader = true;
+        loading = true;
+        preQuiz = false;
+        isText = false;
+        isQuiz = false;
+        isResources = false;
+        isVideo = false;
+        axios.get('api/courses/video?id='+ activeItem.id).then((res)=>{
+          loader = false;
+          loading = false;
+          videoData = res.data as unknown as Ivideo;
+          isVideo = true;
+        })
+        
+      }
+      if(activeItem.type == "quiz") {
+        isVideo = false;
+        isText = false;
+        isResources = false;
+        isQuiz = false;
+        preQuiz = true;
+      }
+      if(activeItem.type == "text") {
+        isVideo = false;
+        isText = true;
+        isQuiz = false;
+        isResources = false;
+      }
+      if(activeItem.type == "resource") {
+        isVideo = false;
+        isText = false;
+        isQuiz = false;
+        isResources = true;
+      }
+      
+    }
     showNav.update(n => false );
     onMount(()=>{
        
         
     })
+    const toggleNightMood = () => {
+    isNightMood = !isNightMood;
+    isDayMood = !isDayMood;
+  };
     
 </script>    
 <svelte:head>
@@ -117,15 +109,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
 </svelte:head>
-<div class="body">
+<div class="body" >
+  <!-- MDL Spinner Component -->
+
     <div class="mdl-layout mdl-js-layout   mdl-layout--fixed-drawer
             mdl-layout--fixed-header ">
       <header class="mdl-layout__header text-primary-color dark-primary-color">
         <div class="mdl-layout__header-row">
            <div>schoolPaddi</div>
            <div class="mdl-layout-spacer"></div>
+           <button on:click={toggleNightMood} 
+            class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">lightbulb</i>
+          </button>
            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                  mdl-textfield--floating-label mdl-textfield--align-right">
+                  mdl-textfield--floating-label mdl-textfield--align-right" >
               <label class="mdl-button mdl-js-button mdl-button--icon"
                for="fixed-header-drawer-exp">
                 <i class="material-icons">search</i>
@@ -136,29 +134,46 @@
               </div>
             </div>
           </div>
+          
        </header>
-  <div class="mdl-layout__drawer">
+  <div class="mdl-layout__drawer" class:default-primary-color={isDayMood} class:night-primary-color={isNightMood}>
     <span class="mdl-layout-title">Title</span>
       <!-- svelte-ignore a11y-missing-attribute -->
     <nav class="mdl-navigation">
-      <p class="mdl-navigation__link active"> <span class="material-icons">
-        play_circle_filled
-        </span> Artifical Intelligence Align</p>
-      <p class="mdl-navigation__link"><span class="material-icons">
-        article
-        </span>What it takes to be great</p>
-      <p class="mdl-navigation__link"><span class="material-icons">
-        source
-        </span>The file to download</p>
+      {#each activeWeek.items as item}
+          {#if item.type == 'video'}
+          <p on:click="{()=>{navigate(item)}}" class="mdl-navigation__link " class:active={item.active}> <span class="material-icons">
+            play_circle_filled
+            </span> {item.name}
+          </p>
+            {:else if item.type == 'quiz'}
+            <p on:click="{()=>{navigate(item)}}" class="mdl-navigation__link" class:active={item.active}><span class="material-icons">
+              quiz
+              </span>{item.name}
+            </p>
+            {:else if item.type == 'text'}
+            <p on:click="{()=>{navigate(item)}}" class="mdl-navigation__link" class:active={item.active}>
+              <span class="material-icons">
+              article
+              </span>
+              {item.name}
+            </p>
+            {:else}
+            <p on:click="{()=>{navigate(item)}}" class="mdl-navigation__link" class:active={activeItem.id == item.id}><span class="material-icons">
+              source
+              </span>{item.name}
+            </p>
+                    
+          {/if}
+      {/each}
     
-      <p class="mdl-navigation__link"><span class="material-icons">
-        quiz
-        </span>first quiz</p>
+      
     </nav>
   </div>
-  <main class="mdl-layout__content">
-    <div class="page-content default-primary-color">
+  <main class="mdl-layout__content" class:default-primary-color={isDayMood} class:night-primary-color={isNightMood}>
+    <div class="page-content " >
         <br>
+
         {#if isVideo}
           <div id="video">
             <div class="video2">
@@ -261,28 +276,32 @@
           {:else if preQuiz}
             <div class="container pl-2 pr-2" id="preQuiz">
               <strong>Pratice Quiz</strong>
-              <h2 class="mt-3">Interview Questions Test your skills to upgrade</h2>
+              <h2 class="mt-3" class:default-primary-color={isDayMood} class:night-primary-color={isNightMood}>{activeItem.name}</h2>
 
               <br>
               <br>
               <div class="row">
                 <div class="col-12">
-                  <button class="mdl-button float-right mdl-js-button mdl-button--raised mdl-js-ripple-effect accent-color">Start</button>
+                  <button on:click="{enterQuiz}" class="mdl-button float-right mdl-js-button mdl-button--raised mdl-js-ripple-effect accent-color">Start</button>
                 </div>
               </div>
               <br>
               <br>
-              <hr>
+              <hr class:hr-day={isDayMood} class:hr-night={isNightMood}>
               <div class="row">
                 <div class="col-sm-9 col-12 ">
                   <strong>To Pass</strong>
-                  80%
+                  {activeItem.content}%
                 </div>
                 <div class="col-sm-3 col-12">
                   <strong>Grade</strong><br> 80%
                 </div>
               </div>
-              <hr>
+              <hr class:hr-day={isDayMood} class:hr-night={isNightMood}>
+            </div>
+            {:else if loading}
+            <div style="height:100%; width: 100%">
+              <p>Loading Contents...</p>
             </div>
         {/if}
       
@@ -295,9 +314,17 @@
   </main>
 </div>
 </div>
+
+<div class="mdl-spinner mdl-js-spinner " class:is-active="{loader}" style="z-index: 100; left:50%; margin-top:40vh"></div>
 <style>
   .body {
     font-family: 'Roboto', sans-serif;
+  }
+  .hr-night {
+    border-top: 1px solid white;
+  }
+  .hr-day {
+    border-top: 1px solid black;
   }
   .video2 {
     width: 100%;
@@ -308,8 +335,14 @@
   font-size: 30px;
   margin-right: 30px;
 }
+
+  .night-primary-color {
+    background: black;
+    color: white;
+    
+  }
 .dark-primary-color    { background: #0C0545; }
-.default-primary-color { background: white; }
+.default-primary-color { background: white; color: black }
 .text-primary-color    { color: #FFFFFF; }
 .accent-color { background: #D3202A;
               color: white
