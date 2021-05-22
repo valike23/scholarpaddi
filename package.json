@@ -10,11 +10,12 @@
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
-    "@types/express": "^4.17.11",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.25.1",
     "compression": "^1.7.1",
+    "country-state-city": "^2.1.0",
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.1",
@@ -27,6 +28,7 @@
     "tippy.js": "^6.3.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.11",
     "@tsconfig/svelte": "^1.0.10",
     "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",

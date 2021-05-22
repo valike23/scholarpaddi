@@ -1,3 +1,7 @@
+
+import { IcolumnValue, SqlHelper } from "../helper/sqlHelpers"
+import { localSql } from "./common"
+
 export interface Icourse {
     id?: number;
     title?: string;
@@ -49,6 +53,7 @@ export interface Ispecification {
      preview?: boolean;
      item_order?: number;
      active?: boolean;
+     done?: boolean;
  }
  export interface IstudentFeedBack {
      full_name?: string;
@@ -57,4 +62,38 @@ export interface Ispecification {
      profile_pics?: string;
      created_date?: Date | string;
      ratingList?: Array<number>
+ }
+ export interface IcourseTaken {
+     id?: number;
+     course_id?: number;
+     student_id?: number;
+     rating?: number;
+     comment?: number;
+     created_date?: number;
+     course?: Icourse;
+     student?: any;
+     current_week?: number;
+     current_item?: number;
+ }
+
+ const sql = new  SqlHelper(localSql);
+ export const  CONFIRM_COURSE  =(courseId: number, studentId: number): Promise<any> =>{
+    
+    return sql.query(`select * from course_taken where student_id=${studentId} and course_id=${courseId} `)
+ }
+
+ export const UPDATE_COURSE_PROGRESS = (courseTaken: IcourseTaken):Promise<any> => {
+     const column: Array<IcolumnValue> = [{},{}];
+     const query: Array<IcolumnValue> = [{},{}];
+     column[0].column = "current_week";
+     column[0].value = courseTaken.current_week;
+     column[1].column = "current_item";
+     column[1].value = courseTaken.current_item;
+
+     query[0].column = "student_id";
+     query[0].value = courseTaken.student_id;
+     query[1].column = "course_id";
+     query[1].value = courseTaken.course_id;
+
+    return sql.updateQuery('course_taken',query,column)
  }

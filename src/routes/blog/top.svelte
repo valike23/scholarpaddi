@@ -100,12 +100,7 @@ showNav.update(n => true );
                     <a href="blog-details.html" class="tran3s">Read More</a>
                 </div> <!-- /.single-blog -->
                 
-                <ul class="theme-pagination clearfix">
-                    <li><a href="#" class="tran3s active">1</a></li>
-                    <li><a href="#" class="tran3s">2</a></li>
-                    <li><a href="#" class="tran3s">3</a></li>
-                    <li><a href="#" class="tran3s">Next</a></li>
-                </ul> <!-- /.theme-pagination -->
+                
             </div>
             <div class="col-md-4 col-sm-6 col-xs-12 theme-sidebar">
                 <form action="#" class="sidebar-search">
@@ -114,13 +109,7 @@ showNav.update(n => true );
                 </form>
                 <div class="sidebar-categories">
                     <h4>Categories</h4>
-                    <ul>
-                        <li><a href="#" class="tran3s">Web Develoment</a></li>
-                        <li><a href="#" class="tran3s">Graphic Design</a></li>
-                        <li><a href="#" class="tran3s">Web Design</a></li>
-                        <li><a href="#" class="tran3s">IOS/Android Development</a></li>
-                        <li><a href="#" class="tran3s">Others</a></li>
-                    </ul>
+     
                 </div> <!-- /.sidebar-categories -->
                 <div class="sidebar-recent-news">
                     <h4>Recent News</h4>

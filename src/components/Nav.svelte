@@ -72,9 +72,10 @@ import { onMount } from "svelte";
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a class="tran3s">Events</a>
 										<ul class="sub-menu">
-											<li><a href="event-list.html">Top Events</a></li>
-											<li><a href="event-grid.html">Event Grid</a></li>
+											<li><a href="event/top">Top Events</a></li>
+											
 											<li><a href="event-details.html">My Events</a></li>
+											<li><a href="event/create">Create An Event</a></li>
 										</ul>
 									</li>
 									<!-- svelte-ignore a11y-missing-attribute -->

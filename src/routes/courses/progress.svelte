@@ -5,41 +5,88 @@
     console.log(id);
     let campusData = await this.fetch("api/courses/course?id=" + id);
     campusData = await campusData.json();
- 
+
     return { campusData };
   }
 </script>
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { Icourse , Iweek} from "../../Models/course";
-
+  import type { Iuser } from "../../Models/common";
+  import type { Icourse, Iweek } from "../../Models/course";
   import { showNav } from "../../stores/nav";
+  import { goto } from "@sapper/app";
+  import axios from "axios";
+
   let isNightMood = true;
   let isDayMood = false;
+  let win: any;
   export let campusData;
   let course: Icourse = campusData[0];
   let activeWeek: Iweek = {};
+  let user: Iuser = {};
+  onMount(() => {
+    win = window;
+    if (sessionStorage.getItem("user")) {
+      user = JSON.parse(sessionStorage.getItem("user"));
+      console.log(user);
+      axios
+        .get(
+          `api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
+        )
+        .then(
+          (res) => {
+            if (res.data.status) {
+              win.iziToast.success({
+                title: "OK",
+                message: "Welcome Back, " + user.first_name,
+                position: "topRight",
+              });
+            } else {
+            }
+          },
+          (err) => {
+            win.iziToast.error({
+              title: "Error",
+              message: "Something Went Wrong!",
+              position: "topRight",
+              onClosed: () => {
+                goto("/");
+              },
+            });
+          }
+        );
+    } else {
+      win.iziToast.error({
+        title: "Error",
+        message: "You have to be logged in to access this page",
+        position: "topRight",
+        onClosed: () => {
+          location.href = "login";
+        },
+      });
+    }
+  });
   const gotoContent = () => {
     location.href = "courses/content?courseId=" + course.title;
-  }
+  };
   showNav.update((n) => false);
-  let isOverView: boolean = false;
+  let isOverView: boolean = true;
   let isWeek: boolean = false;
   let isInfo: boolean = false;
   let isForum: boolean = false;
-  const navigate = (nav: string, id= "") => {
+  const navigate = (nav: string, id = "") => {
     console.log(id);
     if (nav == "overview") {
       isOverView = true;
       isWeek = false;
     } else if (nav == "week") {
-      course.weeks.forEach((ele)=>{
-        if(ele.week_order == id) {
+      course.weeks.forEach((ele) => {
+        if (ele.week_order == id) {
           activeWeek = ele;
           console.log(activeWeek);
         }
-      })
+      });
       isOverView = false;
       isWeek = true;
     } else if (nav == "info") {
@@ -57,6 +104,7 @@
 </script>
 
 <svelte:head>
+  <title>{course.title}</title>
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -78,7 +126,7 @@
     rel="stylesheet"
   />
 </svelte:head>
-   <!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-missing-attribute -->
 <div
   class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header "
 >
@@ -123,7 +171,7 @@
         class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
         for="demo-menu-lower-right"
       >
-        <li class="mdl-menu__item">Valentine Emmanuel</li>
+        <li class="mdl-menu__item">{user.first_name} {user.last_name}</li>
         <li class="mdl-menu__item">Profile</li>
         <li disabled class="mdl-menu__item">Disabled Action</li>
         <li class="mdl-menu__item">Yet Another Action</li>
@@ -137,7 +185,7 @@
     class:text-primary-color={isNightMood}
   >
     <span class="mdl-layout-title">ScholarPaddi</span>
-    <p class="course-title">Neural Network and Deep Learning</p>
+    <p class="course-title">{course.title}</p>
     <!-- svelte-ignore a11y-invalid-attribute -->
     <!-- svelte-ignore a11y-missing-attribute -->
     <nav class="mdl-navigation" class:text-primary-color={isNightMood}>
@@ -150,16 +198,15 @@
         <i class="material-icons">dashboard_customize</i> Overview</a
       >
       {#each course.weeks as week}
-      <a
-      on:click={() => {
-        navigate("week",week.week_order);
-      }}
-      class="mdl-navigation__link"
-      ><i class="material-icons">looks_one</i> Week {week.week_order} </a
-    >
+        <a
+          on:click={() => {
+            navigate("week", week.week_order);
+          }}
+          class="mdl-navigation__link"
+          ><i class="material-icons">looks_one</i> Week {week.week_order}
+        </a>
       {/each}
-     
-      
+
       <a
         class="mdl-navigation__link"
         on:click={() => {
@@ -176,78 +223,84 @@
     </nav>
   </div>
   <main class="mdl-layout__content" class:night-primary-color={isNightMood}>
-    <div class="page-content" >
+    <div class="page-content">
       {#if isOverView}
         <div class="mt-n1 pt-3">
           <!-- repeat the below div for wk2 to wk4 -->
           {#each course.weeks as week}
-          <div class="mdl-card mdl-shadow--2dp long-card ml-2 ml-sm-3 ml-md-4">
-            <div class="mdl-card__title row">
-              <p class="mdl-card__title-text title col-9">Week {week.week_order}</p>
-              <p class="mdl-card__title-text title col-3">5 hrs 20 mins</p>
-            </div>
-            <div class="mdl-card__supporting-text">
-              <div class="row">
-                <div class="col">
-                  <p class="block-title">{week.name}</p>
+            <div
+              class="mdl-card mdl-shadow--2dp long-card ml-2 ml-sm-3 ml-md-4"
+            >
+              <div class="mdl-card__title row">
+                <p class="mdl-card__title-text title col-9">
+                  Week {week.week_order}
+                </p>
+                <p class="mdl-card__title-text title col-3">5 hrs 20 mins</p>
+              </div>
+              <div class="mdl-card__supporting-text">
+                <div class="row">
+                  <div class="col">
+                    <p class="block-title">{week.name}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row ">
-              <div class="col-sm-6 col-12 items mt-3">
-                {#each week.items as item}
-                 {item.name}<span class="circle ml-2 mb-n1" />
-                <span>{item.type}</span><br />
+              <div class="row ">
+                <div class="col-sm-6 col-12 items mt-3">
+                  {#each week.items as item}
+                    {item.name}<span class="circle ml-2 mb-n1" />
+                    <span>{item.type}</span><br />
+                  {/each}
+                </div>
+                <div
+                  class="col-offset-1 mb-2 "
+                  style="border-right:1px solid gray"
+                />
+                <div class="d-block" style="border-bottom: 2px solid black" />
 
-                {/each}
-                
-              </div>
-              <div
-                class="col-offset-1 mb-2 "
-                style="border-right:1px solid gray"
-              />
-              <div class="d-block" style="border-bottom: 2px solid black" />
-
-              <div class="col-sm-5 col-12" style="text-align:left">
-                <div class="row">
-                  <div class="col-7">
-                    <p class="box-body">Required</p>
-                    <div class="row">
-                      <div class="col-2">
-                        <i class="material-icons">quiz</i>
-                      </div>
-                      <div class="col-10">
-                        <p>Programming Assignment</p>
-                        <p>Collinear Points</p>
-                        <p>8h</p>
+                <div class="col-sm-5 col-12" style="text-align:left">
+                  <div class="row">
+                    <div class="col-7">
+                      <p class="box-body">Required</p>
+                      <div class="row">
+                        <div class="col-2">
+                          <i class="material-icons">quiz</i>
+                        </div>
+                        <div class="col-10">
+                          <p>Programming Assignment</p>
+                          <p>Collinear Points</p>
+                          <p>8h</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-2 ">
-                    <p class="box-body">Grade</p>
-                    <p>A (80%)</p>
-                  </div>
-                  <div class="col-3">
-                    <p class="box-body">Due</p>
-                    24, September 2021
+                    <div class="col-2 ">
+                      <p class="box-body">Grade</p>
+                      <p>A (80%)</p>
+                    </div>
+                    <div class="col-3">
+                      <p class="box-body"></p>
+                      <button class="button" on:click={gotoContent}>Resume</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
           {/each}
-          <br>
-          <br>
+          <br />
+          <br />
         </div>
       {:else if isWeek}
         <div id="wkpage">
-          <h3 class="pl-4 pt-4" class:text-primary-color={isNightMood}>Week {activeWeek.week_order}</h3>
+          <h3 class="pl-4 pt-4" class:text-primary-color={isNightMood}>
+            Week {activeWeek.week_order}
+          </h3>
 
           <div class="card">
             <div class="row card-body">
               <div class="col-7 col-sm-9">
                 <p class="bold-text">{activeWeek.name}</p>
-                <p>Discuss and ask questions about week {activeWeek.week_order}</p>
+                <p>
+                  Discuss and ask questions about week {activeWeek.week_order}
+                </p>
                 <p class="small-text">392 threads . Last post 9 hours ago</p>
               </div>
               <div class="col-5 col-sm-3 float-right">
@@ -281,7 +334,7 @@
 
               <div class="col-2">
                 <span class="float-right">
-                  <button on:click="{gotoContent}" class="rsm">Resume</button>
+                  <button on:click={gotoContent} class="rsm">Resume</button>
                 </span>
               </div>
             </div>
@@ -517,8 +570,6 @@
                             <strong>4.8k</strong>
                           </p>
 
-
-                          
                           <p class="views">views</p>
                         </div>
                       </div>
@@ -594,14 +645,12 @@
 <style>
   .dark-primary-color {
     background: #0c0545;
-    
   }
   .default-primary-color {
     background: white;
   }
   .night-primary-color {
     background: black;
-    
   }
   .text-primary-color {
     color: #ffffff;
@@ -635,6 +684,8 @@
   .button {
     width: 100px;
     height: 40px;
+    background-color: #d3202a;
+    color: white
   }
   .course-image {
     background-image: url("images/portfolio/2.jpg");

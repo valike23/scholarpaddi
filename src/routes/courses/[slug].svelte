@@ -17,7 +17,7 @@
 </script>
 
 <script lang="ts">
-    import type { Icourse, IstudentFeedBack } from "../../Models/course";
+    import type { Icourse, IcourseTaken, IstudentFeedBack } from "../../Models/course";
     import moment from "moment";
     import type { Icategory } from "../../Models/category";
     import { showNav } from "../../stores/nav";
@@ -27,11 +27,37 @@
     let win: any;
     let amount: any;
     let user: any;
+    let isActive = false;
+    const gotoProgress = () =>{
+        location.href = "courses/progress?courseId=" + course.title;
+    }
 
     onMount(() => {
         win = window;
         if (sessionStorage.getItem("user")) {
             user = JSON.parse(sessionStorage.getItem("user"));
+            axios
+        .get(
+          `api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
+        )
+        .then(
+          (res) => {
+            if (res.data.status) {
+              isActive = true;
+            } else {
+                isActive = false;
+            }
+          },
+          (err) => {
+            win.iziToast.error({
+              title: "Error",
+              message: "Something Went Wrong!",
+              position: "topRight",
+              
+            });
+          }
+        );
+   
         }
     });
     const openModal = (data) => {
@@ -71,6 +97,27 @@
             callback: function (data) {
                 console.log(data);
                 if (data.status == "successful") {
+                    let form = new FormData();
+                    let courseTaken: IcourseTaken = {};
+                    courseTaken.course_id = course.id;
+                    courseTaken.student_id = user.id;
+                    form.append('body', JSON.stringify(courseTaken));
+                    axios.post('api/courses/course/subscribe', form).then((res)=>{
+                        win.iziToast.success({
+                            title: "OK",
+                            message: "Your Payment has been approved, you now have access to the course.",
+                            position: "bottomLeft",
+                            onClosed: ()=>{
+                                goto('courses/progress?courseId=' + course.title)
+                            }
+                        })
+                    },(err)=>{
+                        win.iziToast.error({
+                            title: "Error",
+                            message: err.msg,
+                            position: "bottomLeft"
+                        })
+                    })
                 } else {
                     win;
                 }
@@ -574,11 +621,20 @@
                             </ul>
                             <p><b>{feedBack.length}</b> Students Enroolled</p>
                         </div>
-                        <a
+                        {#if isActive}
+                             <!-- content here -->
+                             <a on:click="{gotoProgress}"
+                            class="tran3s s-bg-color take-course hvr-trim"
+                            >Continue the course</a
+                        >
+                        {:else}
+                             <!-- else content here -->
+                             <a
                             on:click={makePayment}
                             class="tran3s s-bg-color take-course hvr-trim"
                             >Take this course</a
                         >
+                        {/if}
                     </div>
                     <!-- /.sidebar-course-information -->
 

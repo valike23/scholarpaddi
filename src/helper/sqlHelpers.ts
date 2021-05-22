@@ -3,6 +3,10 @@ import type { ConnectionConfig, Connection } from 'mysql';
 export interface Iquery {
     where?: any
 }
+export interface IcolumnValue {
+    column?: string;
+    value?: any;
+}
 export class SqlHelper {
     
     connection: Connection;
@@ -92,6 +96,32 @@ private generateLT (col, value): string {
             })
         })
     }
+    updateQuery(tableName: string, query:Array<IcolumnValue>, columns: Array<IcolumnValue>){
+        console.log(query);
+        let columnInput = '';
+        columns.forEach((e,i)=>{
+            columnInput += `${e.column} = ${e.value} `;
+            if(i < columns.length - 1){
+                columnInput += ','
+            }
 
+        });
+        let queryText = '';
+        if(query.length == 1){
+            queryText = `${query[0].column} = ${query[0].value}`;
+        }
+        else{
+            query.forEach((e,i)=>{
+                queryText += `${e.column} = ${e.value} `;
+                if(i < columns.length - 1){
+                    queryText += ' and '
+                }
+    
+            });
+        }
+        let sql = `update ${tableName} set ${columnInput} where ${queryText} `;
+        console.log('query', sql);
+        return this.defaultQuery(sql);
+    }
     
 }
