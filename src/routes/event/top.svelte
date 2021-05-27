@@ -1,3 +1,18 @@
+<script lang="ts" context="module">
+    export async function preload(page, session) {
+        const eventRequest = await this.fetch("api/events/top?page=1");
+        const events = await eventRequest.json();
+        return { events };
+    }
+</script>
+<script lang="ts">
+import type { Ievent } from "../../Models/event";
+
+
+    // your script goes here
+    export let events: Array<Ievent>;
+</script>
+
 <div class="inner-banner">
     <div class="opacity">
         <div class="container">
@@ -16,72 +31,29 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-xs-12">
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/7.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/8.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/9.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/10.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/11.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
-                <div class="single-event clearfix">
-                    <div class="image-box float-left"><img src="images/event/12.jpg" alt=""></div>
-                    <div class="text float-left">
-                        <h4><a href="event-details.html" class="tran3s">Best Student Awawrd 2016</a></h4>
-                        <p>Mauris in erat justo. Nullam ac urna eu felis da condi ntum sit amet a augue. Sed non neque elit. Sed ut imperdieto nisie tiam pharetra, erat sed fermentu feugiat, velt mauris egestas quam.</p>
-                        <ul class="clearfix">
-                            <li class="float-left"><i class="flaticon-time"></i> 10 Apr, 2016</li>
-                            <li class="float-left"><i class="flaticon-placeholder"></i> Mirpur, Dhaka</li>
-                        </ul>
-                    </div> <!-- /.text -->
-                </div> <!-- /.single-event -->
+               {#each events as event}
+               <div class="single-event clearfix">
+                <div class="image-box float-left"><img src="{event.imageHttpsUrl}" style="max-height:360px; height:300px;" alt=""></div>
+                <div class="text float-left">
+                    <h4><a href="{'event/' + event.name}" class="tran3s">{event.name}</a></h4>
+                    <p>{event.description}</p>
+                    <ul class="clearfix">
+                        <li class="float-left"><i class="flaticon-time"></i> {event.date}</li>
+                        {#if event.city}
+                             <!-- content here -->
+                             <li class="float-left"><i class="flaticon-placeholder"></i>{event.state}, {event.city}</li>
+                        {:else if  event.state}
+                        <li class="float-left"><i class="flaticon-placeholder"></i>{event.country}, {event.state}</li>
+                             <!-- else if content here -->
+                        {:else}
+                        <li class="float-left"><i class="flaticon-placeholder"></i>{event.country}</li>
+                             <!-- else content here -->
+                        {/if}
+                       
+                    </ul>
+                </div> <!-- /.text -->
+            </div> 
+               {/each}
                 <!-- svelte-ignore a11y-invalid-attribute -->
                 <ul class="theme-pagination clearfix">
                    

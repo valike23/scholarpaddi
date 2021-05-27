@@ -1,3 +1,5 @@
+
+
 export interface Ivideo {
     id?: number;
     quizs?: Array<Iquiz>;

@@ -1,5 +1,5 @@
 import  {SqlHelper} from '../helper/sqlHelpers';
-import { localSql } from '../Models/common';
+import { Iuser, localSql } from '../Models/common';
 import {compare, hash } from 'bcrypt';
 
 const sqlHelpers = new SqlHelper(localSql);

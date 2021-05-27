@@ -13,5 +13,10 @@ export interface Ievent {
     imageHttpUrl?: string;
     imageHttpsUrl?: string;
     publicId?: string;
-    
+    content?: string;
+    views?: number;
+    uploaderId?: number;
+    description?: string;
+    endDate?: string;
+
 }
