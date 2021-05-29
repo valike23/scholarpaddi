@@ -1,8 +1,11 @@
 <script lang="ts" context="module">
     export async function preload(page, session) {
-        const eventRequest = await this.fetch("api/events/top?page=1");
+        var query = page.query;
+        const eventRequest = await this.fetch(`api/events/top?page=${query.page}`);
+        const countRequest = await this.fetch('api/events/count');
         const events = await eventRequest.json();
-        return { events };
+        const count = await countRequest.json();
+        return { events , count};
     }
 </script>
 <script lang="ts">
@@ -11,6 +14,15 @@ import type { Ievent } from "../../Models/event";
 
     // your script goes here
     export let events: Array<Ievent>;
+    export let count: number;
+    let tempArray = [];
+    for (let index = 0; index < count; index++) {
+        tempArray.push({id: index + 1});
+        
+    }
+    if(tempArray.length > 0){
+        tempArray[0].active = true;
+    }
 </script>
 
 <div class="inner-banner">
@@ -35,7 +47,7 @@ import type { Ievent } from "../../Models/event";
                <div class="single-event clearfix">
                 <div class="image-box float-left"><img src="{event.imageHttpsUrl}" style="max-height:360px; height:300px;" alt=""></div>
                 <div class="text float-left">
-                    <h4><a href="{'event/' + event.name}" class="tran3s">{event.name}</a></h4>
+                    <h4><a href="{'event/' + event._id}" class="tran3s">{event.name}</a></h4>
                     <p>{event.description}</p>
                     <ul class="clearfix">
                         <li class="float-left"><i class="flaticon-time"></i> {event.date}</li>
@@ -56,10 +68,13 @@ import type { Ievent } from "../../Models/event";
                {/each}
                 <!-- svelte-ignore a11y-invalid-attribute -->
                 <ul class="theme-pagination clearfix">
-                   
-                    <li><a href="#" class="tran3s active">1</a></li>
-                    <li><a href="#" class="tran3s">2</a></li>
-                    <li><a href="#" class="tran3s">3</a></li>
+                   {#each tempArray as temp}
+                        <!-- content here -->
+                        <li><a href="/event/top?page= {temp.id}" class="tran3s">{temp.id}</a></li>
+                   {/each}
+                    <!-- <li><a href="#" class="tran3s active">1</a></li>
+                    
+                    <li><a href="#" class="tran3s">3</a></li> -->
                     <li><a href="#" class="tran3s">Next</a></li>
                 </ul> <!-- /.theme-pagination -->
             </div>

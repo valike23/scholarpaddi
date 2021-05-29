@@ -10,39 +10,104 @@
 </script>
 
 <script lang="ts">
-import { onMount } from "svelte";
+    import { onMount } from "svelte";
 
     import type { Ievent } from "../../Models/event";
-
+    let win: any;
     let days = 0;
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
+    let myMap;
+    let zoom = 6;
+    let circle;
+    let marker;
+
 
     // your script goes here
     export let event: Ievent;
-    const initTime = ()=>{
+    const initTime = () => {
         let data: any = event.date;
         data = new Date(data);
         data = data - Date.now();
-        days = Math.floor(data/86400000);
-        data = data/86400000 - days;
+        days = Math.floor(data / 86400000);
+        data = data / 86400000 - days;
         hours = Math.floor(data * 24);
         data = data * 24 - hours;
-        minutes = Math.floor( data * 60);
+        minutes = Math.floor(data * 60);
         data = data * 60 - minutes;
-        seconds = Math.floor( data * 60);
+        seconds = Math.floor(data * 60);
         console.log(data, days, hours, minutes, seconds);
-        
-        
-    }
-    onMount(()=>{
-        let timer = setInterval(()=>{
+    };
+    onMount(() => {
+        win = window;
+        if (event.address) {
+            zoom = 14;
+        } else if (event.city) {
+            zoom = 10;
+        } else if (event.state) {
+            zoom = 9;
+        } else {
+            zoom = 4;
+        }
+        console.log("zoom text: ", zoom);
+        myMap = win.L.map("mapid").setView([event.lat, event.long], zoom);
+        win.L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibHVkaWtlMjMiLCJhIjoiY2swZG5oOXZyMDAwNDNubW9uMm5nM3FhayJ9.gRrOd1UAaZ79JFZID8F4uw",
+            {
+                attribution:
+                    'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: "your.mapbox.access.token",
+            }
+        ).addTo(myMap);
+
+        let timer = setInterval(() => {
             initTime();
-        }, 1000)
-    })
+        }, 1000);
+
+        if (event.address) {
+             marker = win.L.marker([event.lat, event.long]).addTo(myMap);
+        } else if (event.city) {
+             circle = win.L.circle([event.lat, event.long], {
+                color: "red",
+                fillColor: "#f03",
+                fillOpacity: 0.5,
+                radius: 9500,
+            }).addTo(myMap);
+        } else if (event.state) {
+             circle = win.L.circle([event.lat, event.long], {
+                color: "red",
+                fillColor: "#f03",
+                fillOpacity: 0.5,
+                radius: 36550,
+            }).addTo(myMap);
+        } else {
+             circle = win.L.circle([event.lat, event.long], {
+                color: "red",
+                fillColor: "#0f3",
+                fillOpacity: 0.5,
+                radius: 405500,
+            }).addTo(myMap);
+        }
+    });
 </script>
 
+<svelte:head>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+</svelte:head>
 <div class="inner-banner">
     <div class="opacity">
         <div class="container">
@@ -131,7 +196,10 @@ import { onMount } from "svelte";
                             </div>
                         </div>
                     </div>
-                    {@html event.content}
+                    <div>
+                        {@html event.content}
+                    </div>
+                    <div id="mapid" />
                 </div>
                 <!-- /.details-wrapper -->
             </div>
@@ -278,3 +346,11 @@ import { onMount } from "svelte";
     </div>
     <!-- /.container -->
 </div>
+
+<style>
+    #mapid {
+        min-height: 250px;
+        height: 500px;
+        max-height: 1000px;
+    }
+</style>

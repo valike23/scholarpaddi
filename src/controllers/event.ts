@@ -1,4 +1,4 @@
-import { MongoClient, MongoError } from "mongodb";
+import { MongoClient, MongoError, ObjectId } from "mongodb";
 import { mongoConnection } from "../Models/common";
 import type { Ievent } from "../Models/event";
 import moment, { Moment, FromTo } from 'moment';
@@ -81,7 +81,8 @@ export class EventController {
     getEvent(title: string): Promise<Ievent> {
         return new Promise((resolve, reject) => {
             try {
-                this.client.db(this.name).collection(this.collection).findOne({ name: title }).then((result: Ievent) => {
+                
+                this.client.db(this.name).collection(this.collection).findOne({ _id: new ObjectId(title) }).then((result: Ievent) => {
                     resolve(result);
                 }, (err) => {
                     this.connect();
@@ -91,6 +92,23 @@ export class EventController {
                 this.connect();
                 reject(error);
             }
+        })
+    }
+    getTotalPageCount(): Promise<number> {
+        return new Promise((resolve, reject)=>{
+           try{
+            this.client.db(this.name).collection(this.collection).count().then((res)=>{
+               res = Math.ceil(res/this.difference);
+                resolve(res);
+            },(err)=>{
+                reject(err)
+            })
+           }
+           catch(error) {
+            this.connect();
+            console.log(error);
+            reject('cannot connect to mongo server');
+           }
         })
     }
 }
