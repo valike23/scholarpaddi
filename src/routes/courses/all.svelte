@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
     export async function preload( page, session) {
-        let campusData = await this.fetch('api/courses/all?id=1');
+        let query = page.query;
+        let campusData = await this.fetch(`api/courses/all?id=${query.page || 1}`);
         campusData = await campusData.json();
 
         return {campusData}
@@ -14,9 +15,16 @@ import type { Icourse } from '../../Models/course';
 import { showNav } from '../../stores/nav';
 showNav.update(n => true );
      export let  campusData;
-     console.log(campusData);
-     let courses: Array<Icourse> =  campusData;
-     
+     let count = campusData.count;
+     let countArray = [];
+     for (let index = 0; index < count; index++) {
+         countArray.push({id: index + 1})
+         
+     }
+     let courses: Array<Icourse> =  campusData.data;
+     const nav = (num:number) =>{
+        location.href = 'courses/all?page=' + num;
+     }
      
 </script>
 
@@ -89,9 +97,12 @@ showNav.update(n => true );
                    {/each}
                 </div> <!-- /.row -->
                 <ul class="theme-pagination clearfix">
-                    <li><a  class="tran3s active">1</a></li>
-                    <li><a  class="tran3s">2</a></li>
-                    <li><a  class="tran3s">3</a></li>
+                    <!-- <li><a  class="tran3s active">1</a></li>
+                    <li><a  class="tran3s">2</a></li> -->
+                    {#each countArray as item}
+                    <li><a href="courses/all?page={item.id}" on:click="{()=>{nav(item.id)}}" class="tran3s">{item.id}</a></li>
+                    {/each}
+                    
                     <li><a  class="tran3s">Next</a></li>
                 </ul> <!-- /.theme-pagination -->
             </div> <!-- /.popular-course -->

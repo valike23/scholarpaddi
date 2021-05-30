@@ -22,6 +22,7 @@
     let zoom = 6;
     let circle;
     let marker;
+    let address = '';
 
 
     // your script goes here
@@ -43,12 +44,16 @@
         win = window;
         if (event.address) {
             zoom = 14;
+            address = event.city + " ," + event.state;
         } else if (event.city) {
             zoom = 10;
+            address = event.city + " ," + event.state;
         } else if (event.state) {
             zoom = 9;
+            address = event.state + " ," + event.country;
         } else {
             zoom = 4;
+            address = event.country ;
         }
         console.log("zoom text: ", zoom);
         myMap = win.L.map("mapid").setView([event.lat, event.long], zoom);
@@ -158,7 +163,7 @@
                                 <div>
                                     <i class="flaticon-placeholder" />
                                     <span>Location</span>
-                                    <p>California, USA</p>
+                                    <p>{address}</p>
                                 </div>
                             </li>
                         </ul>

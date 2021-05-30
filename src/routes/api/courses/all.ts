@@ -5,13 +5,22 @@ const course = new CourseController();
 
 export function get (req: Request, res: Http2ServerResponse, next: Next) {
     let page: any = req.query.id;
-    console.log(page);
     page = parseInt(page);
+    console.log(page);
     course.getAllCourses(page).then((result: any)=>{
-        res.statusCode= 200;
+        result = result[0];
+        course.getCoursesCount().then((data)=>{
+            res.statusCode= 200;
+            let mart = {
+                count: data[0].count/ 9,
+                data: result
+            }
         
-        res.end(JSON.stringify(result))
+            res.end(JSON.stringify(mart))
+        })
+        
     }).catch((err: any)=> {
+        console.log(err);
         res.statusCode = 401;
         res.end(JSON.stringify(err));
     })

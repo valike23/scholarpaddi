@@ -42,7 +42,7 @@ import { onMount } from "svelte";
 						   <!-- Collect the nav links, forms, and other content for toggling -->
 						   <div class="collapse navbar-collapse" id="navbar-collapse-1">
 								<ul class="nav">
-									<li class="dropdown-holder menu-list"><a href="index-2.html" class="tran3s">Home</a>
+									<li class="dropdown-holder menu-list"><a href="/" class="tran3s">Home</a>
 										
 									</li>
 									<!-- svelte-ignore a11y-missing-attribute -->
@@ -72,7 +72,7 @@ import { onMount } from "svelte";
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a class="tran3s">Events</a>
 										<ul class="sub-menu">
-											<li><a href="event/top">Top Events</a></li>
+											<li><a href="event/top?page=1">Top Events</a></li>
 											
 											<li><a href="event-details.html">My Events</a></li>
 											<li><a href="event/create">Create An Event</a></li>

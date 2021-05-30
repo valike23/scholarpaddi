@@ -97,3 +97,4 @@ export interface Ispecification {
 
     return sql.updateQuery('course_taken',query,column)
  }
+ 
