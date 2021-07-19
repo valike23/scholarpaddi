@@ -3,25 +3,25 @@ import { CourseController} from '../../../controllers/course';
 import type { Http2ServerResponse } from 'http2';
 const course = new CourseController();
 
-export function get (req: Request, res: Http2ServerResponse, next: Next) {
+export async function get (req: Request, res: Http2ServerResponse, next: Next) {
     let page: any = req.query.id;
     page = parseInt(page);
     console.log(page);
-    course.getAllCourses(page).then((result: any)=>{
+    try {
+        let result: any = await course.getAllCourses(page);
         result = result[0];
-        course.getCoursesCount().then((data)=>{
-            res.statusCode= 200;
+        let data: any = await course.getCoursesCount();
+        res.statusCode= 200;
             let mart = {
                 count: data[0].count/ 9,
                 data: result
             }
-        
+            console.log('super super super',mart);
             res.end(JSON.stringify(mart))
-        })
-        
-    }).catch((err: any)=> {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
         res.statusCode = 401;
-        res.end(JSON.stringify(err));
-    })
+        res.end(JSON.stringify(error));
+    }
+   
 }

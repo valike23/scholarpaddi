@@ -48,16 +48,6 @@ import { onMount } from "svelte";
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a  class="tran3s">Course</a>
 										<ul class="sub-menu width-half">
-											<li><a href="about-us.html">Programming</a></li>
-											<li><a href="our-teacher.html">Physics</a></li>
-											<li><a href="teachers-profile.html">Fortran</a></li>
-											<li><a href="shop.html">Surds</a></li>
-											<li><a href="shop-details.html">Chemistry</a></li>
-											<li><a href="portfolio-3-column.html">Javascript</a></li>
-											<li><a href="portfolio-4-column.html">Nodejs</a></li>
-											<li><a href="pricing-plan.html">Angular</a></li>
-											<li><a href="faq.html">Shoe Making</a></li>
-											<li><a href="404.html">Tailorings</a></li>
 											<li><a href="courses/all">All Courses</a></li>
 											<!-- svelte-ignore a11y-invalid-attribute -->
 											<li class="dropdown-holder"><a href="#">Third Level menu</a>
@@ -86,7 +76,7 @@ import { onMount } from "svelte";
 											<li><a href="blog-details.html">News for You</a></li>
 										</ul>
 									</li>
-									<li><a href="/signup" class="tran3s">Tools</a></li>
+									<li><a href="/projects" class="tran3s">Projects</a></li>
 									<li class="login">
 										{#if !stage}
 										<button  class="tran3s">

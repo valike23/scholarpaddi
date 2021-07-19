@@ -179,7 +179,7 @@ import { showNav } from "../../stores/nav";
 					</ul>
 				</div> <!-- /.sidebar-categories -->
 				<div class="sidebar-recent-news">
-					<h4>Recent News</h4>
+					<h4>Related News</h4>
 					<ul>
 						<li class="single-news clearfix">
 							<img src="images/blog/4.jpg" alt="" class="float-left">

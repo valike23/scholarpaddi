@@ -3,7 +3,7 @@
         let query = page.query;
         let campusData = await this.fetch(`api/courses/all?id=${query.page || 1}`);
         campusData = await campusData.json();
-
+        console.log('crazy crazy crazy!! crazy crazy fun tonight',campusData[0]);
         return {campusData}
         
     }

@@ -30,8 +30,20 @@ export class BlogController {
     }
     create(blog: Iblog): any {
        return new Promise((resolve, reject) => {
-           console.log('test');
-           resolve(JSON.stringify(blog));
+           this.client.db(this.name).collection(this.collection).insertOne(blog).then((data)=>{
+            console.log('test');
+            resolve(JSON.stringify(blog));
+           },(err)=>{
+            console.log(err);
+            reject(err);
+           })
+           
        })
+    }
+
+    getTopBlogs(page: number) {
+        return new Promise((resolve, reject) =>{
+
+        })
     }
 }
