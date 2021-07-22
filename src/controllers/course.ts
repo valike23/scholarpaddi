@@ -82,6 +82,7 @@ export class CourseController {
                 console.log(sql);
                 let result: any = await sqlHelper.defaultQuery(sql);
                 resolve(result)
+                return;
             } catch (error) {
                 reject(error)
             }
@@ -129,8 +130,15 @@ export class CourseController {
         return sqlHelper.defaultQuery(sql);
 
     }
-    getCoursesCount(): Promise<any> {
-        return sqlHelper.defaultQuery('SELECT COUNT(id)as count FROM courses');
+    async getCoursesCount(): Promise<any> {
+        return new Promise(async (resolve, reject)=>{
+           try {
+            let data = await sqlHelper.defaultQuery('SELECT COUNT(id)as count FROM courses');
+            resolve(data)
+           } catch (error) {
+               reject(error)
+           }
+        })
     }
 
 }

@@ -1,13 +1,16 @@
 <script context="module" lang="ts">
+import { url } from '../../Models/common';
+
     export async function preload( page, session) {
         let query = page.query;
-        let campusData = await this.fetch(`api/courses/all?id=${query.page || 1}`);
+        let campusData = await this.fetch(`${url}api/courses/all?id=${query.page || 1}`);
+        let countData = await this.fetch(`${url}api/courses/all`,{method: 'PUT'});
         campusData = await campusData.json();
-        console.log('crazy crazy crazy!! crazy crazy fun tonight',campusData[0]);
-        return {campusData}
-        
+        countData = await countData.json();
+        countData = countData[0]
+        console.log('crazy crazy crazy!! crazy crazy fun tonight',countData);
+        return {campusData, countData}  
     }
-    
   
 </script>
 <script lang="ts">
@@ -15,13 +18,14 @@ import type { Icourse } from '../../Models/course';
 import { showNav } from '../../stores/nav';
 showNav.update(n => true );
      export let  campusData;
-     let count = campusData.count;
+     export let countData;
+     let count = Math.ceil( countData.count/9);
+     console.log(count);
      let countArray = [];
      for (let index = 0; index < count; index++) {
-         countArray.push({id: index + 1})
-         
+         countArray.push({id: index + 1})   
      }
-     let courses: Array<Icourse> =  campusData.data;
+     let courses: Array<Icourse> =  campusData[0];
      const nav = (num:number) =>{
         location.href = 'courses/all?page=' + num;
      }

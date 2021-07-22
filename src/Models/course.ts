@@ -17,7 +17,7 @@ export interface Icourse {
     language?: string;
     level?: string;
     sub_category?: string;
-    category: string;
+    category?: string;
     discount?: number;
     specification_id?: number;
     is_active?: boolean;

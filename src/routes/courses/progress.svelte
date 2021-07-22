@@ -1,9 +1,11 @@
 <script context="module" lang="ts">
+
+import { url } from '../../Models/common';
   export async function preload(page, session) {
     let id = page.query.courseId;
 
     console.log(id);
-    let campusData = await this.fetch("api/courses/course?id=" + id);
+    let campusData = await this.fetch(`${url}api/courses/course?id=`+ id);
     campusData = await campusData.json();
 
     return { campusData };

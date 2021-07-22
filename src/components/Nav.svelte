@@ -48,7 +48,7 @@ import { onMount } from "svelte";
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a  class="tran3s">Course</a>
 										<ul class="sub-menu width-half">
-											<li><a href="courses/all">All Courses</a></li>
+											<li><a rel=external href="courses/all">All Courses</a></li>
 											<!-- svelte-ignore a11y-invalid-attribute -->
 											<li class="dropdown-holder"><a href="#">Third Level menu</a>
 												<ul class="second-sub-menu">
@@ -62,17 +62,17 @@ import { onMount } from "svelte";
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a class="tran3s">Events</a>
 										<ul class="sub-menu">
-											<li><a href="event/top?page=1">Top Events</a></li>
+											<li><a sapper:prefetch href="event/top?page=1">Top Events</a></li>
 											
 											<li><a href="event-details.html">My Events</a></li>
-											<li><a href="event/create">Create An Event</a></li>
+											<li><a sapper:prefetch href="event/create">Create An Event</a></li>
 										</ul>
 									</li>
 									<!-- svelte-ignore a11y-missing-attribute -->
 									<li class="dropdown-holder menu-list"><a  class="tran3s">News</a>
 										<ul class="sub-menu">
-											<li><a href="/blog">Breaking News</a></li>
-											<li><a href="/blog/top">Top News</a></li>
+											<li><a sapper:prefetch href="/blog">Breaking News</a></li>
+											<li><a sapper:prefetch href="/blog/top">Top News</a></li>
 											<li><a href="blog-details.html">News for You</a></li>
 										</ul>
 									</li>

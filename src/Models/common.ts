@@ -31,4 +31,5 @@ export const cloudinaryConfig: ConfigOptions = {
 
 
 export const db = "schoolpaddi";
+export const url = "https://scholarpaddi.com/"
 export const mongoConnection: string = "mongodb+srv://user:Ka1PzKmwhVhjiYhv@cluster0.mpekq.mongodb.net/schoolpaddi?retryWrites=true&w=majority";

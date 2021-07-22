@@ -2,7 +2,7 @@
   export async function preload(page, session) {
     let id = page.query.courseId;
 
-    let campusData = await this.fetch("api/courses/course?id=" + id);
+    let campusData = await this.fetch(`${url}api/courses/course?id=` + id);
     campusData = await campusData.json();
 
     return { campusData };
@@ -16,7 +16,7 @@
   import Video from "../../components/Video.svelte";
   import type { Ivideo } from "../../Models/auxilary";
   import type { Icourse, IcourseTaken, Iitem } from "../../Models/course";
-  import type { Iuser } from "../../Models/common";
+  import { Iuser, url } from "../../Models/common";
   let isVideo = false;
   let loading = false;
   let isText = false;

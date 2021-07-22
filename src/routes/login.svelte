@@ -43,7 +43,6 @@
                     position: 'topRight',
                     onClosed: ()=>{
                         sessionStorage.setItem('user', JSON.stringify(res));
-                        alert(win.history.length);
                         if(win.history.length > 2){
                             win.history.back();
                         }
