@@ -43,6 +43,8 @@ export interface Ispecification {
     week_order?: string;
     items?: Array<Iitem>;
     objectives?: string;
+    isActive?: boolean;
+    isDone?: boolean;
 }
  export interface Iitem {
      id?: number;
@@ -54,6 +56,7 @@ export interface Ispecification {
      item_order?: number;
      active?: boolean;
      done?: boolean;
+     isActive?: boolean;
  }
  export interface IstudentFeedBack {
      full_name?: string;

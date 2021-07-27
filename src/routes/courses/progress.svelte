@@ -15,11 +15,11 @@ import { url } from '../../Models/common';
 <script lang="ts">
   import { onMount } from "svelte";
   import type { Iuser } from "../../Models/common";
-  import type { Icourse, Iweek } from "../../Models/course";
+  import type { Icourse, IcourseTaken, Iweek } from "../../Models/course";
   import { showNav } from "../../stores/nav";
   import { goto } from "@sapper/app";
   import axios from "axios";
-
+  let courseTaken: IcourseTaken = {};
   let isNightMood = true;
   let isDayMood = false;
   let win: any;
@@ -31,14 +31,30 @@ import { url } from '../../Models/common';
     win = window;
     if (sessionStorage.getItem("user")) {
       user = JSON.parse(sessionStorage.getItem("user"));
-      console.log(user);
+      console.log(course);
       axios
         .get(
-          `api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
+          `${url}api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
         )
         .then(
           (res) => {
             if (res.data.status) {
+              console.log(res.data);
+              courseTaken = res.data.data;
+              if(courseTaken.current_week){
+                course.weeks.forEach((e,i)=>{
+                  if(e.id == courseTaken.current_week) {
+                    course.weeks[i].isActive = true;
+                    return;
+
+                  }
+                  else {
+                    course.weeks[i].isDone = true;
+                  }
+                })
+              }else {
+                course.weeks[0].isActive = true;
+              }
               win.iziToast.success({
                 title: "OK",
                 message: "Welcome Back, " + user.first_name,
@@ -204,7 +220,7 @@ import { url } from '../../Models/common';
           on:click={() => {
             navigate("week", week.week_order);
           }}
-          class="mdl-navigation__link"
+          class="mdl-navigation__link" class:active-course={week.isActive} class:is-done={week.isDone}
           ><i class="material-icons">looks_one</i> Week {week.week_order}
         </a>
       {/each}
@@ -224,7 +240,7 @@ import { url } from '../../Models/common';
       >
     </nav>
   </div>
-  <main class="mdl-layout__content" class:night-primary-color={isNightMood}>
+  <main class="mdl-layout__content pl-sm-2 pr-sm-3" class:night-primary-color={isNightMood}>
     <div class="page-content">
       {#if isOverView}
         <div class="mt-n1 pt-3">
@@ -280,7 +296,9 @@ import { url } from '../../Models/common';
                     </div>
                     <div class="col-3">
                       <p class="box-body"></p>
+                   
                       <button class="button" on:click={gotoContent}>Resume</button>
+                     
                     </div>
                   </div>
                 </div>
@@ -645,6 +663,12 @@ import { url } from '../../Models/common';
 </div>
 
 <style>
+  .is-done {
+    background-color: aquamarine;
+  }
+  .active-course {
+    background-color: gainsboro;
+  }
   .dark-primary-color {
     background: #0c0545;
   }
