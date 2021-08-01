@@ -1,6 +1,7 @@
 import type { Request, Next} from 'polka';
 import { CourseController} from '../../../controllers/course';
 import type { Http2ServerResponse } from 'http2';
+import type { Iitem } from '../../../Models/course';
 const course = new CourseController();
 
 export function get (req: Request, res: Http2ServerResponse, next: Next) {
@@ -20,11 +21,14 @@ export function get (req: Request, res: Http2ServerResponse, next: Next) {
             });
             Promise.all(promiseAry).then((values: any)=>{
                 values.forEach((e, i) => {
-                    e.forEach((element, j) => {
-                        if(!element.preview){
-                            delete(element.content);
-                            e[j] = element;
+                    e.forEach((element: Iitem, j) => {
+                        if(!(element.type == 'quiz')){
+                            if(!element.preview){
+                                delete(element.content);
+                                e[j] = element;
+                            }
                         }
+                        
                     });
                     result[0].weeks[i].items = e;
                 });

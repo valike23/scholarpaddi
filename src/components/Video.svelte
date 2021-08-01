@@ -213,7 +213,7 @@
                     
                     <progress></progress>
                       
-                    <div class="question-area mt-3">
+                    <div class="question-area mt-3" style="color: black">
                         <br>
                         <p style="text-align:center"><strong>{currentQuestion.quiz}</strong></p>
                         <div class="options">

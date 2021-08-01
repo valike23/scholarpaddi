@@ -43,14 +43,23 @@ import { url } from '../../Models/common';
               courseTaken = res.data.data;
               if(courseTaken.current_week){
                 course.weeks.forEach((e,i)=>{
-                  if(e.id == courseTaken.current_week) {
+                
+                  if(e.week_order as unknown as number < courseTaken.current_week){
+                    course.weeks[i].isDone = true;
+                    e.items.forEach((f,j)=>{
+                    course.weeks[i].items[j].isDone = true;
+                  })
+                  }
+                  if(e.week_order as unknown as number == courseTaken.current_week) {
                     course.weeks[i].isActive = true;
+                    e.items.forEach((f,j)=>{
+                      if(courseTaken.current_item > f.item_order)course.weeks[i].items[j].isDone = true;
+                    
+                  })
                     return;
 
                   }
-                  else {
-                    course.weeks[i].isDone = true;
-                  }
+                 
                 })
               }else {
                 course.weeks[0].isActive = true;
@@ -100,6 +109,7 @@ import { url } from '../../Models/common';
       isWeek = false;
     } else if (nav == "week") {
       course.weeks.forEach((ele) => {
+       
         if (ele.week_order == id) {
           activeWeek = ele;
           console.log(activeWeek);
@@ -220,8 +230,12 @@ import { url } from '../../Models/common';
           on:click={() => {
             navigate("week", week.week_order);
           }}
-          class="mdl-navigation__link" class:active-course={week.isActive} class:is-done={week.isDone}
+          class="mdl-navigation__link" class:active-course={week.isActive} 
           ><i class="material-icons">looks_one</i> Week {week.week_order}
+          {#if week.isDone}
+          <i style="color: green" class="material-icons">done</i>
+          {/if}
+         
         </a>
       {/each}
 
@@ -265,7 +279,7 @@ import { url } from '../../Models/common';
               <div class="row ">
                 <div class="col-sm-6 col-12 items mt-3">
                   {#each week.items as item}
-                    {item.name}<span class="circle ml-2 mb-n1" />
+                    {item.name}<span class="circle ml-2 mb-n1"  class:active-item={item.isDone} />
                     <span>{item.type}</span><br />
                   {/each}
                 </div>
@@ -296,8 +310,10 @@ import { url } from '../../Models/common';
                     </div>
                     <div class="col-3">
                       <p class="box-body"></p>
-                   
-                      <button class="button" on:click={gotoContent}>Resume</button>
+                   {#if week.isActive}
+                   <button class="button" on:click={gotoContent}>Resume</button>
+                   {/if}
+                     
                      
                     </div>
                   </div>
@@ -663,8 +679,8 @@ import { url } from '../../Models/common';
 </div>
 
 <style>
-  .is-done {
-    background-color: aquamarine;
+  .active-item {
+    background-color: green;
   }
   .active-course {
     background-color: gainsboro;

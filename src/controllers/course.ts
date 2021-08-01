@@ -1,7 +1,7 @@
 import { SqlHelper } from '../helper/sqlHelpers';
 import { localSql, mongoConnection } from '../Models/common';
 import { MongoClient, MongoError, ObjectID } from 'mongodb';
-import type { Iads, Ivideo } from '../Models/auxilary';
+import type { Iads, Ivideo, IweeklyQuiz } from '../Models/auxilary';
 
 const sqlHelper = new SqlHelper(localSql);
 
@@ -9,9 +9,11 @@ export class CourseController {
     name: string;
     collection: string;
     client: MongoClient;
+    weeklyQuiz: string;
     constructor() {
         this.name = 'schoolpaddi';
         this.collection = 'blog';
+        this.weeklyQuiz = 'weeklyQuiz';
         this.connect().then((res) => {
             this.client = res;
 
@@ -27,6 +29,17 @@ export class CourseController {
             }, (error: MongoError) => {
                 reject(error);
             })
+        })
+    }
+    getWeeklyQuiz(quizId: number) {
+        return new Promise (async (resolve, reject)=>{
+            try {
+                let client: MongoClient = await this.connect();
+               let quiz: IweeklyQuiz = await client.db(this.name).collection(this.weeklyQuiz).findOne({id: Number(quizId)});
+                resolve(quiz);
+            } catch (error) {
+                reject(error);
+            }
         })
     }
     getVideo(videoId: number) {

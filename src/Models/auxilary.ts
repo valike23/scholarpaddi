@@ -8,8 +8,22 @@ export interface Ivideo {
     sources?: Array<Isource>;
     tracks?: Array<Itrack>;
     duration?: number;
+    _id?: any
 }
+export interface IweeklyQuiz {
+    _id?: any,
+    id?: number,
+    time?: number,
+    questions?: Array<IquizQuestion>,
+    
+}
+interface IquizQuestion {
+    question?: number,
+    options?: Array<string>,
+    answer?: string,
+    img?: string
 
+}
 export interface Iquiz {
     time?: string;
     questions?: Array<Iquestion>

@@ -8,6 +8,7 @@ export function get (req, res:Http2ServerResponse) {
     Course.getVideo(req.query.id as unknown as number).then((resd: Ivideo)=>{
         res.statusCode = 200;
         res.end(JSON.stringify(resd))
+        console.log(resd);
 
     },(err)=>{
         res.statusCode = 503;

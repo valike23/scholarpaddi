@@ -14,10 +14,11 @@
   import { onMount } from "svelte";
   import { showNav } from "../../stores/nav";
   import Video from "../../components/Video.svelte";
-  import type { Ivideo } from "../../Models/auxilary";
+  import type { Ivideo, IweeklyQuiz } from "../../Models/auxilary";
   import type { Icourse, IcourseTaken, Iitem } from "../../Models/course";
   import { Iuser, url } from "../../Models/common";
   let isVideo = false;
+  let quizs: IweeklyQuiz = {};
   let loading = false;
   let isText = false;
   let isQuiz = false;
@@ -36,6 +37,7 @@
   let courseTaken: IcourseTaken = {};
   const setActiveItem = (item: Iitem) => {
     activeItem = item;
+    console.log("set active Item", item);
     activeWeek.items.forEach((e, i) => {
       if (e.id == item.id) {
         activeWeek.items[i].active = true;
@@ -45,19 +47,34 @@
     });
   };
 
-  const enterQuiz = (item: Iitem) => {
+  const enterQuiz = async (item: Iitem) => {
     activeItem = item;
     isVideo = false;
-    loading = false;
+    loading = true;
     isText = false;
-    isQuiz = true;
+    isQuiz = false;
     loader = false;
     preQuiz = false;
+    try {
+      quizs = await (await axios.get(`${url}api/courses/course/weeklyQuiz?id=${activeWeek.id}`)).data;
+     loader = false;
+      loading = false;
+      isQuiz = true;
+
+     console.log(quizs);
+    } catch (error) {
+      loader = false;
+      loading = false;
+      preQuiz = true;
+      
+    }
+    
   };
 
   const navigate = (item: Iitem) => {
     setActiveItem(item);
     if (activeItem.type == "video") {
+      console.log('video');
       loader = true;
       loading = true;
       preQuiz = false;
@@ -65,10 +82,11 @@
       isQuiz = false;
       isResources = false;
       isVideo = false;
-      axios.get("api/courses/video?id=" + activeItem.id).then((res) => {
+      axios.get(`${url}api/courses/video?id=` + activeItem.id).then((res: any) => {
         loader = false;
         loading = false;
-        videoData = res.data as unknown as Ivideo;
+        videoData = res.data;
+        console.log('videoData',videoData);
         isVideo = true;
       });
     }
@@ -99,13 +117,18 @@
       user = JSON.parse(sessionStorage.getItem("user"));
       axios
         .get(
-          `api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
+          `${url}api/courses/course/subscribe?courseId=${course.id}&studentId=${user.id}`
         )
         .then(
           (res) => {
             if (res.data.status) {
               courseTaken = res.data.data;
+              course.weeks.forEach((e)=>{
+                if(e.week_order as unknown as number == courseTaken.current_week) activeWeek = e;
+                console.log(e);
+              })
               if (courseTaken.current_item) {
+                console.log('active week', activeWeek);
                 let item: Iitem = {};
                 activeWeek.items.forEach((e, i) => {
 
@@ -154,7 +177,7 @@
     courseTaken.current_item = activeItem.item_order;
     let form = new FormData();
     form.append('data', JSON.stringify(courseTaken));
-    axios.put('api/courses/course/subscribe', form).then(()=>{
+    axios.put(`${url}api/courses/course/subscribe`, form).then(()=>{
       
     },()=>{
 
@@ -396,73 +419,35 @@
           <div id="quiz">
             <h3>The title of the Quiz</h3>
             <div id="questionArea">
-              <div class="row" id="question">
-                <div class="col-12 pl-3">
-                  1. The top of a mountain is called its ...
-                  <img
-                    class="img-fluid pl-4 pt-2"
-                    src="images/shop/4.jpg"
-                    style="max-width:100%"
-                    alt="mountain question"
-                  />
-                  <div class="row pt-2">
-                    <div class="col-12 col-sm-6">
-                      <input name="pick" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="pick" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="pick" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="pick" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                  </div>
+             {#each quizs.questions as quiz}
+             <div class="row" id="question">
+              <div class="col-12 pl-3">
+               {quiz.question}
+               {#if quiz.img}
+               <img
+               class="img-fluid pl-4 pt-2"
+               src="images/shop/4.jpg"
+               style="max-width:100%"
+               alt="mountain question"
+             />
+               {/if}
+                <div class="row pt-2">
+                 {#each quiz.options as option}
+                 <div class="col-12 col-sm-6">
+                  <input name="pick" type="radio" /><label for="r"
+                    >{option}</label
+                  >
+                </div>
+                 {/each}
+              
+                
+               
                 </div>
               </div>
-              <hr />
-              <div class="row" id="question">
-                <div class="col-12 pl-3">
-                  2. The top of a mountain is called its ...
-                  <img
-                    class="img-fluid pl-4 pt-2"
-                    src="images/shop/4.jpg"
-                    style="max-width:100%"
-                    alt="mountain question"
-                  />
-                  <div class="row pt-2">
-                    <div class="col-12 col-sm-6">
-                      <input name="two" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="two" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="two" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                    <div class="col-12 col-sm-6">
-                      <input name="two" type="radio" /><label for="r"
-                        >Peak</label
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
+            </div>
+            <hr />
+             {/each}
+            
             </div>
           </div>
         {:else if preQuiz}
@@ -496,7 +481,7 @@
                 {activeItem.content}%
               </div>
               <div class="col-sm-3 col-12">
-                <strong>Grade</strong><br /> 80%
+                <strong>Grade</strong><br /> {activeItem.content}%
               </div>
             </div>
             <hr class:hr-day={isDayMood} class:hr-night={isNightMood} />

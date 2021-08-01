@@ -57,6 +57,7 @@ export interface Ispecification {
      active?: boolean;
      done?: boolean;
      isActive?: boolean;
+     isDone?: boolean;
  }
  export interface IstudentFeedBack {
      full_name?: string;
